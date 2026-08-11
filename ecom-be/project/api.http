@@ -1,0 +1,514 @@
+### E-commerce Backend API tests (REST Client format)
+### Base URL — adjust if your server runs on a different port
+@baseUrl = http://localhost:5000
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNjg1NTU3MTUyZGVkOThmMmJiYzRiZSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc4NTIyMjQ4NywiZXhwIjoxNzg1MzA4ODg3fQ.X0qL1ym2mWXMU3y0Si-jIONWHeXkEfIhrbPyZ7WeM_Q
+@userToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNjg1NTZiMTUyZGVkOThmMmJiYzRjMSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg1MjIyNTA3LCJleHAiOjE3ODUzMDg5MDd9.SjHEsytARVq8LZMZH7HJbDhCb8KeJS2xUm53-Gol8x4
+@cartToken =
+@productId =
+@categoryId =
+@orderId =
+
+### =========================================================
+### AUTH
+### =========================================================
+
+### 1. Create the initial admin account (run once)
+# @name createAdmin
+POST {{baseUrl}}/api/auth/admin/create
+Content-Type: application/json
+
+{
+  "name": "Store Admin",
+  "email": "admin@example.com",
+  "password": "admin123"
+}
+
+### 2. Admin login
+# @name adminLogin
+POST {{baseUrl}}/api/auth/admin/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "admin123"
+}
+
+### Copy the token from the response and paste below:
+@adminToken = {{adminLogin.response.body.data.token}}
+
+### 3. User signup
+# @name userSignup
+POST {{baseUrl}}/api/auth/signup
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": "password123",
+  "phone": "9876543210"
+}
+
+### 4. User login
+# @name userLogin
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "john@example.com",
+  "password": "password123"
+}
+
+@userToken = {{userLogin.response.body.data.token}}
+
+### 5. Get current user (protected)
+GET {{baseUrl}}/api/auth/me
+Authorization: Bearer {{userToken}}
+
+### 6. Start Google OAuth login (open in browser)
+GET {{baseUrl}}/api/auth/google
+
+### =========================================================
+### CATEGORIES
+### =========================================================
+
+### 7. Create a category (admin)
+# @name createCategory
+POST {{baseUrl}}/api/products/categories
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "name": "Skincare",
+  "description": "Skincare products"
+}
+
+# @categoryId = {{createCategory.response.body.data._id}}
+
+### 8. List all categories (public)
+GET {{baseUrl}}/api/products/categories/all
+
+### 9. Delete a category (admin)
+DELETE {{baseUrl}}/api/products/categories/{{categoryId}}
+Authorization: Bearer {{adminToken}}
+
+### =========================================================
+### PRODUCTS
+### =========================================================
+
+### 10. Create a product with images (admin) — multipart/form-data
+# @name createProduct
+POST {{baseUrl}}/api/products
+Authorization: Bearer {{adminToken}}
+Content-Type: multipart/form-data; boundary=----FormBoundary
+
+------FormBoundary
+Content-Disposition: form-data; name="title"
+
+Vitamin C Serum
+------FormBoundary
+Content-Disposition: form-data; name="description"
+
+Brightening vitamin C serum for daily use.
+------FormBoundary
+Content-Disposition: form-data; name="price"
+
+499
+------FormBoundary
+Content-Disposition: form-data; name="stock"
+
+50
+------FormBoundary
+Content-Disposition: form-data; name="category"
+
+{{categoryId}}
+------FormBoundary
+Content-Disposition: form-data; name="benefits"
+
+Brightens skin, reduces dark spots.
+------FormBoundary
+Content-Disposition: form-data; name="ingredients"
+
+Vitamin C, Hyaluronic Acid, Glycerin.
+------FormBoundary
+Content-Disposition: form-data; name="howToUse"
+
+Apply 2-3 drops to clean skin before moisturizer.
+------FormBoundary
+Content-Disposition: form-data; name="specifications"
+
+30ml bottle
+------FormBoundary
+Content-Disposition: form-data; name="shippingInfo"
+
+Ships in 1-2 business days.
+------FormBoundary
+Content-Disposition: form-data; name="productInformation"
+
+For external use only.
+------FormBoundary
+Content-Disposition: form-data; name="faqs"
+
+[{"question":"Is it cruelty-free?","answer":"Yes."},{"question":"Can I use it at night?","answer":"Yes, twice a day."}]
+------FormBoundary
+Content-Disposition: form-data; name="images"; filename="serum.jpg"
+Content-Type: image/jpeg
+
+< ./sample.jpg
+------FormBoundary--
+
+@productId = {{createProduct.response.body.data._id}}
+
+### 11. Create a product without images (admin) — JSON body
+POST {{baseUrl}}/api/products
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "title": "Hydrating Face Wash",
+  "description": "Gentle daily cleanser for all skin types.",
+  "price": 249,
+  "stock": 100,
+  "category": "{{categoryId}}",
+  "benefits": "Cleanses without stripping moisture.",
+  "ingredients": "Aloe Vera, Glycerin, Coco-betaine.",
+  "howToUse": "Massage onto wet face, rinse off.",
+  "specifications": "100ml tube",
+  "shippingInfo": "Ships in 1-2 business days.",
+  "productInformation": "For external use only.",
+  "faqs": [
+    { "question": "Is it sulfate-free?", "answer": "Yes." }
+  ]
+}
+
+### 12. List products (public) with filters
+GET {{baseUrl}}/api/products
+
+### 13. List products (admin, includes inactive)
+GET {{baseUrl}}/api/products/admin?page=1&limit=10
+Authorization: Bearer {{adminToken}}
+
+### 14. Get a single product (by id or slug)
+GET {{baseUrl}}/api/products/{{productId}}
+
+### 15. Update a product (admin) — JSON fields
+PUT {{baseUrl}}/api/products/{{productId}}
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "price": 449,
+  "stock": 45,
+  "description": "Updated description for the vitamin C serum."
+}
+
+### 16. Update product images (admin) — multipart, replaces all images
+PUT {{baseUrl}}/api/products/{{productId}}
+Authorization: Bearer {{adminToken}}
+Content-Type: multipart/form-data; boundary=----FormBoundary
+
+------FormBoundary
+Content-Disposition: form-data; name="images"; filename="new.jpg"
+Content-Type: image/jpeg
+
+< ./sample.jpg
+------FormBoundary--
+
+### 17. Delete a product (admin)
+DELETE {{baseUrl}}/api/products/{{productId}}
+Authorization: Bearer {{adminToken}}
+
+### =========================================================
+### REVIEWS
+### =========================================================
+
+### 18. Add a review (logged-in user)
+POST {{baseUrl}}/api/reviews/product/6a699066978bd2885341a668
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "rating": 5,
+  "comment": "Excellent product, skin feels great!"
+}
+
+### 19. Add a review as a guest (no auth)
+POST {{baseUrl}}/api/reviews/product/{{productId}}
+Content-Type: application/json
+
+{
+  "rating": 4,
+  "comment": "Good value for money.",
+  "guestName": "Anonymous shopper"
+}
+
+### 20. List all reviews for a product
+GET {{baseUrl}}/api/reviews/product/{{productId}}
+
+### 21. Delete a review (owner or admin)
+DELETE {{baseUrl}}/api/reviews/{{reviewId}}
+Authorization: Bearer {{userToken}}
+
+### =========================================================
+### CART
+### =========================================================
+
+### 22. Get / create my cart (guest — save the returned cartToken)
+# @name getCart
+GET {{baseUrl}}/api/cart
+
+@cartToken = {{getCart.response.body.data.cartToken}}
+
+### 23. Add item to cart (guest, using x-cart-token header)
+POST {{baseUrl}}/api/cart
+x-cart-token: {{cartToken}}
+Content-Type: application/json
+
+{
+  "productId": "6a6857b0152ded98f2bbc4c8",
+  "quantity": 2
+}
+
+### 24. Add item to cart (logged-in user)
+POST {{baseUrl}}/api/cart
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "productId": "6a684ddb2a4a8d31f9c104c6",
+  "quantity": 1
+}
+
+### 25. Update cart item quantity
+PUT {{baseUrl}}/api/cart
+x-cart-token: {{cartToken}}
+Content-Type: application/json
+
+{
+  "productId": "{{productId}}",
+  "quantity": 3
+}
+
+### 26. Remove an item from the cart
+DELETE {{baseUrl}}/api/cart
+x-cart-token: {{cartToken}}
+Content-Type: application/json
+
+{
+  "productId": "{{productId}}"
+}
+
+### 27. Clear the cart
+DELETE {{baseUrl}}/api/cart/clear
+x-cart-token: {{cartToken}}
+
+### =========================================================
+### ORDERS / CHECKOUT
+### =========================================================
+
+### 28. Place a COD order (guest) — creates order immediately
+# @name createCodOrder
+POST {{baseUrl}}/api/orders
+x-cart-token: {{cartToken}}
+Content-Type: application/json
+
+{
+  "items": [
+    { "productId": "6a6857b0152ded98f2bbc4c8", "quantity": 2 }
+  ],
+  "paymentMethod": "COD",
+  "shippingAddress": {
+    "name": "Rahul Sharma",
+    "phone": "9876543210",
+    "email": "rahul@example.com",
+    "address": "123 MG Road",
+    "city": "Mumbai",
+    "state": "Maharashtra",
+    "pincode": "400001"
+  }
+}
+
+@orderId = {{createCodOrder.response.body.data._id}}
+
+### 29. Place an ONLINE order (guest) — returns PhonePe payment URL
+# @name createOnlineOrder
+POST {{baseUrl}}/api/orders
+Content-Type: application/json
+
+{
+  "items": [
+    { "productId": "{{productId}}", "quantity": 1 }
+  ],
+  "paymentMethod": "ONLINE",
+  "shippingAddress": {
+    "name": "Rahul Sharma",
+    "phone": "9876543210",
+    "email": "rahul@example.com",
+    "address": "123 MG Road",
+    "city": "Mumbai",
+    "state": "Maharashtra",
+    "pincode": "400001"
+  }
+}
+
+### 30. Verify an online payment (after returning from PhonePe)
+POST {{baseUrl}}/api/orders/verify-payment
+Content-Type: application/json
+
+{
+  "merchantTransactionId": "MTX_xxx"
+}
+
+### 31. PhonePe webhook (server-to-server) — PhonePe posts here
+POST {{baseUrl}}/api/orders/phonepe/webhook
+Content-Type: application/json
+
+{
+  "response": "eyJjb2RlIjoiUEFZTUVOVF9TVUNDRVNTIn0="
+}
+
+### 32. List my orders (logged-in user)
+GET {{baseUrl}}/api/orders/me
+Authorization: Bearer {{userToken}}
+
+### 33. Get my order by id (owner)
+GET {{baseUrl}}/api/orders/me/{{orderId}}
+Authorization: Bearer {{userToken}}
+
+### =========================================================
+### ADMIN — ORDERS
+### =========================================================
+
+### 34. List all orders (admin)
+GET {{baseUrl}}/api/orders?page=1&limit=20
+Authorization: Bearer {{adminToken}}
+
+### 35. Get a single order (admin)
+GET {{baseUrl}}/api/orders/{{orderId}}
+Authorization: Bearer {{adminToken}}
+
+### 36. Update order status (admin)
+PUT {{baseUrl}}/api/orders/{{orderId}}/status
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "status": "Shipped"
+}
+
+### 37. Generate AWB for an order (admin)
+POST {{baseUrl}}/api/orders/{{orderId}}/awb
+Authorization: Bearer {{adminToken}}
+
+### 38. Track an order shipment (admin)
+GET {{baseUrl}}/api/orders/{{orderId}}/track
+Authorization: Bearer {{adminToken}}
+
+### 39. Cancel an order (admin)
+PUT {{baseUrl}}/api/orders/{{orderId}}/cancel
+Authorization: Bearer {{adminToken}}
+
+### =========================================================
+### ADMIN — DASHBOARD
+### =========================================================
+
+### 40. Dashboard summary
+GET {{baseUrl}}/api/dashboard/summary
+Authorization: Bearer {{adminToken}}
+
+### 41. Monthly sales report (?year=2024 optional)
+GET {{baseUrl}}/api/dashboard/monthly-sales?year=2024
+Authorization: Bearer {{adminToken}}
+
+### 42. Per-user spend report
+GET {{baseUrl}}/api/dashboard/user-spend
+Authorization: Bearer {{adminToken}}
+
+### 43. List all users
+GET {{baseUrl}}/api/dashboard/users?page=1&limit=20
+Authorization: Bearer {{adminToken}}
+
+### 44. Low-stock products (?threshold=5 optional)
+GET {{baseUrl}}/api/dashboard/low-stock?threshold=5
+Authorization: Bearer {{adminToken}}
+
+### =========================================================
+### HEALTH
+### =========================================================
+
+### 45. Health check
+GET {{baseUrl}}/health
+
+
+## =========================================================
+### 1. Add a YouTube video (admin)
+### =========================================================
+# @name createYoutubeVideo
+POST {{baseUrl}}/api/videos
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "title": "Product demo video",
+  "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+}
+
+@videoId = {{createYoutubeVideo.response.body.data._id}}
+
+### =========================================================
+### 2. Add an Instagram Reel (admin)
+### =========================================================
+# @name createInstaReel
+POST {{baseUrl}}/api/videos
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "title": "Unboxing reel",
+  "url": "https://www.instagram.com/reel/CxYzAbC1234/"
+}
+
+### =========================================================
+### 3. Try an invalid URL (should return 400)
+### =========================================================
+POST {{baseUrl}}/api/videos
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "title": "Bad link",
+  "url": "https://www.example.com/not-a-video"
+}
+
+### =========================================================
+### 4. Get all videos (public)
+### =========================================================
+GET {{baseUrl}}/api/videos
+
+### 5. Get only YouTube videos (public)
+GET {{baseUrl}}/api/videos?platform=youtube
+
+### 6. Get only Instagram videos (public)
+GET {{baseUrl}}/api/videos?platform=instagram
+
+### =========================================================
+### 7. Get a single video by id (public)
+### =========================================================
+GET {{baseUrl}}/api/videos/{{videoId}}
+
+### =========================================================
+### 8. Update a video (admin)
+### =========================================================
+PUT {{baseUrl}}/api/videos/{{videoId}}
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "title": "Updated demo video title",
+  "isActive": true
+}
+
+### =========================================================
+### 9. Delete a video (admin)
+### =========================================================
+DELETE {{baseUrl}}/api/videos/{{videoId}}
+Authorization: Bearer {{adminToken}}

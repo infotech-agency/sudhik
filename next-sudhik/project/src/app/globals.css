@@ -1,0 +1,298 @@
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-saffron: 201 122 26;
+  --color-gold: 212 175 55;
+  --color-maroon: 122 30 46;
+  --color-ivory: 255 248 240;
+  --color-ink: 26 26 26;
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Mukta', system-ui, sans-serif;
+  color: #1a1a1a;
+  background-color: #fff8f0;
+  overflow-x: hidden;
+}
+
+.font-royal {
+  font-family: 'Cinzel', serif;
+}
+
+::selection {
+  background: rgba(212, 175, 55, 0.3);
+  color: #1a1a1a;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #fff8f0;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #d4af37, #c97a1a);
+  border-radius: 999px;
+  border: 2px solid #fff8f0;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #c97a1a, #7a1e2e);
+}
+
+.text-gold-gradient {
+  background: linear-gradient(120deg, #b8962a 0%, #d4af37 30%, #f7ecc2 50%, #d4af37 70%, #b8962a 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 6s linear infinite;
+}
+
+.text-saffron-gradient {
+  background: linear-gradient(120deg, #c97a1a, #f0b262, #c97a1a);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-divider {
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.8) 50%, transparent);
+}
+
+.glass-ivory {
+  background: rgba(255, 248, 240, 0.7);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+}
+.glass-dark {
+  background: rgba(26, 20, 16, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(212, 175, 55, 0.22);
+}
+
+.ring-gold {
+  box-shadow: inset 0 0 0 1px rgba(212, 175, 55, 0.5);
+}
+
+.lift {
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease;
+}
+.lift:hover {
+  transform: translateY(-8px);
+}
+
+.swiper-pagination-bullet {
+  background: rgba(201, 122, 26, 0.3) !important;
+  opacity: 1 !important;
+  width: 8px !important;
+  height: 8px !important;
+}
+.swiper-pagination-bullet-active {
+  background: linear-gradient(90deg, #d4af37, #c97a1a) !important;
+  width: 26px !important;
+  border-radius: 999px !important;
+}
+.swiper-button-next,
+.swiper-button-prev {
+  color: #c97a1a !important;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.cursor-lens {
+  cursor: zoom-in;
+}
+
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type='number'] {
+  -moz-appearance: textfield;
+} */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Core palette — pulled directly from the Shuddhik label */
+  --color-maroon-950: 58 12 20;     /* #3A0C14 — deepest background maroon */
+  --color-maroon-800: 90 20 32;     /* #5A1420 — panel / card maroon */
+  --color-maroon-600: 122 30 46;    /* #7A1E2E — accent maroon, "Buy Now" hover, tags */
+
+  --color-saffron-600: 179 92 15;   /* #B35C0F — deep saffron */
+  --color-saffron-500: 201 122 26;  /* #C97A1A — primary CTA saffron */
+  --color-saffron-400: 224 154 74;  /* #E09A4A — lighter saffron for hovers */
+
+  --color-gold-500: 184 150 42;     /* #B8962A — deep temple gold */
+  --color-gold-400: 212 175 55;     /* #D4AF37 — signature gold (borders, dividers) */
+  --color-gold-200: 247 236 194;    /* #F7ECC2 — pale gold shimmer highlight */
+
+  --color-ivory: 253 247 234;       /* #FDF7EA — label cream background */
+  --color-ivory-dim: 246 237 216;   /* #F6EDD8 — slightly deeper cream for panels */
+
+  --color-ink: 30 20 16;            /* #1E1410 — near-black warm ink for text */
+  --color-ink-soft: 74 56 46;       /* #4A382E — softer body text on cream */
+}
+ 
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Mukta', system-ui, sans-serif;
+  color: rgb(var(--color-ink));
+  background-color: rgb(var(--color-ivory));
+  overflow-x: hidden;
+}
+
+.font-royal {
+  font-family: 'Cinzel', serif;
+}
+
+::selection {
+  background: rgba(212, 175, 55, 0.35);
+  color: rgb(var(--color-ink));
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: rgb(var(--color-ivory));
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #d4af37, #7a1e2e);
+  border-radius: 999px;
+  border: 2px solid rgb(var(--color-ivory));
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #b8962a, #5a1420);
+}
+
+/* Gold shimmer text — headlines, wordmark */
+.text-gold-gradient {
+  background: linear-gradient(120deg, #7a1e2e 0%, #b8962a 22%, #f7ecc2 45%, #d4af37 60%, #b8962a 78%, #7a1e2e 100%);
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 6s linear infinite;
+}
+
+/* Saffron gradient text — CTAs, price highlights */
+.text-saffron-gradient {
+  background: linear-gradient(120deg, #7a1e2e, #c97a1a, #e09a4a, #c97a1a, #7a1e2e);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: 200% center;
+  }
+}
+
+.gold-divider {
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.9) 50%, transparent);
+}
+
+.glass-ivory {
+  background: rgba(253, 247, 234, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(212, 175, 55, 0.28);
+}
+.glass-dark {
+  background: rgba(58, 12, 20, 0.6);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+}
+
+.ring-gold {
+  box-shadow: inset 0 0 0 1px rgba(212, 175, 55, 0.55);
+}
+
+/* Premium temple-panel shadow for cards / product shots */
+.shadow-premium {
+  box-shadow: 0 12px 40px -8px rgba(58, 12, 20, 0.28), 0 2px 8px rgba(184, 150, 42, 0.18);
+}
+.shadow-gold {
+  box-shadow: 0 6px 20px -4px rgba(184, 150, 42, 0.45);
+}
+.shadow-glow {
+  box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.6), 0 8px 28px -6px rgba(122, 30, 46, 0.4);
+}
+
+.lift {
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease;
+}
+.lift:hover {
+  transform: translateY(-8px);
+}
+
+.swiper-pagination-bullet {
+  background: rgba(122, 30, 46, 0.3) !important;
+  opacity: 1 !important;
+  width: 8px !important;
+  height: 8px !important;
+}
+.swiper-pagination-bullet-active {
+  background: linear-gradient(90deg, #d4af37, #7a1e2e) !important;
+  width: 26px !important;
+  border-radius: 999px !important;
+}
+.swiper-button-next,
+.swiper-button-prev {
+  color: #7a1e2e !important;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.cursor-lens {
+  cursor: zoom-in;
+}
+
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type='number'] {
+  -moz-appearance: textfield;
+}

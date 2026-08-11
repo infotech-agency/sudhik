@@ -1,0 +1,107 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  theme: {
+    extend: {
+      colors: {
+        saffron: {
+          50: '#FDF4E8',
+          100: '#FBE6CC',
+          200: '#F6CC97',
+          300: '#F0B262',
+          400: '#E89A33',
+          500: '#C97A1A',
+          600: '#A86112',
+          700: '#854A0E',
+          800: '#5E3408',
+          900: '#3D2004',
+        },
+        gold: {
+          50: '#FBF6E6',
+          100: '#F7ECC2',
+          200: '#EFD989',
+          300: '#E5C45A',
+          400: '#D4AF37',
+          500: '#B8962A',
+          600: '#96781F',
+          700: '#705A18',
+          800: '#4D3D11',
+          900: '#2E240A',
+        },
+        maroon: {
+          50: '#FBEEF0',
+          100: '#F5D4D8',
+          200: '#E8A2AB',
+          300: '#D77080',
+          400: '#B84A5E',
+          500: '#7A1E2E',
+          600: '#671726',
+          700: '#52121E',
+          800: '#3A0D15',
+          900: '#24070C',
+        },
+        ivory: '#FFF8F0',
+        sand: '#F3E7D3',
+        beige: '#E8D9BE',
+        ink: '#1A1A1A',
+      },
+      fontFamily: {
+        serif: ['"Cormorant Garamond"', 'serif'],
+        display: ['"Playfair Display"', 'serif'],
+        royal: ['"Cinzel"', 'serif'],
+        modern: ['"DM Serif Display"', 'serif'],
+        sans: ['"Mukta"', 'system-ui', 'sans-serif'],
+        deva: ['"Tiro Devanagari Hindi"', 'serif'],
+      },
+      letterSpacing: {
+        royal: '0.22em',
+        'royal-sm': '0.12em',
+      },
+      boxShadow: {
+        glow: '0 0 80px -10px rgba(212, 175, 55, 0.55)',
+        'glow-soft': '0 0 60px -20px rgba(212, 175, 55, 0.5)',
+        gold: '0 20px 50px -20px rgba(201, 122, 26, 0.45)',
+        premium: '0 30px 70px -30px rgba(26, 26, 26, 0.35)',
+        insetgold: 'inset 0 0 0 1px rgba(212, 175, 55, 0.4)',
+      },
+      backgroundImage: {
+        'gold-line': 'linear-gradient(90deg, transparent, rgba(212,175,55,0.7), transparent)',
+        'gold-radial': 'radial-gradient(circle at center, rgba(212,175,55,0.18), transparent 70%)',
+        'lotus-fade': 'radial-gradient(ellipse at top, rgba(247,236,194,0.6), transparent 60%)',
+        'temple-dark': 'radial-gradient(ellipse at top, rgba(201,122,26,0.18), transparent 55%), radial-gradient(ellipse at bottom, rgba(122,30,46,0.15), transparent 55%)',
+        'maroon-fade': 'radial-gradient(ellipse at center, rgba(122,30,46,0.12), transparent 65%)',
+        'saffron-maroon': 'linear-gradient(120deg, #C97A1A, #7A1E2E)',
+      },
+      keyframes: {
+        floatY: {
+          '0%,100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-14px)' },
+        },
+        smokeRise: {
+          '0%': { opacity: '0', transform: 'translateY(0) scaleX(1)' },
+          '20%': { opacity: '0.5' },
+          '100%': { opacity: '0', transform: 'translateY(-120px) scaleX(1.8)' },
+        },
+        auraPulse: {
+          '0%,100%': { opacity: '0.35', transform: 'scale(1)' },
+          '50%': { opacity: '0.6', transform: 'scale(1.06)' },
+        },
+        shimmer: {
+          '0%': { backgroundPosition: '-200% center' },
+          '100%': { backgroundPosition: '200% center' },
+        },
+        spinSlow: {
+          to: { transform: 'rotate(360deg)' },
+        },
+      },
+      animation: {
+        floatY: 'floatY 6s ease-in-out infinite',
+        smokeRise: 'smokeRise 5s ease-out infinite',
+        auraPulse: 'auraPulse 5s ease-in-out infinite',
+        shimmer: 'shimmer 6s linear infinite',
+        spinSlow: 'spinSlow 40s linear infinite',
+      },
+    },
+  },
+  plugins: [],
+};
