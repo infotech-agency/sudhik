@@ -1,6 +1,6 @@
 ### E-commerce Backend API tests (REST Client format)
 ### Base URL — adjust if your server runs on a different port
-@baseUrl = http://localhost:5000
+@baseUrl = https://api.shuddhik.com
 @adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNjg1NTU3MTUyZGVkOThmMmJiYzRiZSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc4NTIyMjQ4NywiZXhwIjoxNzg1MzA4ODg3fQ.X0qL1ym2mWXMU3y0Si-jIONWHeXkEfIhrbPyZ7WeM_Q
 @userToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNjg1NTZiMTUyZGVkOThmMmJiYzRjMSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg1MjIyNTA3LCJleHAiOjE3ODUzMDg5MDd9.SjHEsytARVq8LZMZH7HJbDhCb8KeJS2xUm53-Gol8x4
 @cartToken =
@@ -19,8 +19,8 @@ Content-Type: application/json
 
 {
   "name": "Store Admin",
-  "email": "admin@example.com",
-  "password": "admin123"
+  "email": "admin@suddhik.com",
+  "password": "Suddhik@321"
 }
 
 ### 2. Admin login
