@@ -13,10 +13,10 @@ const quickLinks = [
 ];
 
 const policyLinks = [
-  { label: 'Shipping Policy', href: '#' },
-  { label: 'Returns & Refunds', href: '#' },
-  { label: 'Privacy Policy', href: '#' },
-  { label: 'Terms of Use', href: '#' },
+  { label: 'Shipping Policy', href: '/shipping-policy' },
+  { label: 'Returns & Refunds', href: '/returns-and-refunds' },
+  { label: 'Privacy Policy', href: '/privacy-policy' },
+  { label: 'Terms of Use', href: '/terms-of-use' },
 ];
 
 export default function Footer() {
@@ -90,11 +90,11 @@ export default function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <Mail size={17} className="text-gold-300 mt-0.5 shrink-0" />
-                <a href="mailto:seva@shuddhik.in" className="font-serif text-ivory/65 hover:text-gold-300 transition-colors text-base">seva@shuddhik.in</a>
+                <a href="mailto:ocbuildwell@gmail.com" className="font-serif text-ivory/65 hover:text-gold-300 transition-colors text-base">ocbuildwell@gmail.com</a>
               </li>
               <li className="flex items-start gap-3">
                 <Phone size={17} className="text-gold-300 mt-0.5 shrink-0" />
-                <a href="tel:+918000000000" className="font-serif text-ivory/65 hover:text-gold-300 transition-colors text-base">+91 80000 00000</a>
+                <a href="tel:917290061140" className="font-serif text-ivory/65 hover:text-gold-300 transition-colors text-base">+91 72900 61140</a>
               </li>
               <li className="flex items-start gap-3">
                 <MapPin size={17} className="text-gold-300 mt-0.5 shrink-0" />

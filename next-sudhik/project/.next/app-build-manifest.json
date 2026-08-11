@@ -22,30 +22,30 @@
       "static/chunks/main-app.js",
       "static/chunks/app/products/page.js"
     ],
-    "/products/[idOrSlug]/page": [
+    "/returns-and-refunds/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/products/[idOrSlug]/page.js"
+      "static/chunks/app/returns-and-refunds/page.js"
     ],
     "/_not-found/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/_not-found/page.js"
     ],
-    "/auth/login/page": [
+    "/shipping-policy/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/auth/login/page.js"
+      "static/chunks/app/shipping-policy/page.js"
     ],
-    "/product/page": [
+    "/privacy-policy/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/product/page.js"
+      "static/chunks/app/privacy-policy/page.js"
     ],
-    "/use/page": [
+    "/terms-of-use/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/use/page.js"
+      "static/chunks/app/terms-of-use/page.js"
     ]
   }
 }
