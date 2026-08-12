@@ -3174,6 +3174,10 @@ input[type='number'] {
   --tw-text-opacity: 1;
   color: rgb(103 23 38 / var(--tw-text-opacity, 1));
 }
+.hover\:text-saffron-300:hover {
+  --tw-text-opacity: 1;
+  color: rgb(240 178 98 / var(--tw-text-opacity, 1));
+}
 .hover\:text-saffron-500:hover {
   --tw-text-opacity: 1;
   color: rgb(201 122 26 / var(--tw-text-opacity, 1));
@@ -3185,10 +3189,6 @@ input[type='number'] {
 .hover\:text-saffron-700:hover {
   --tw-text-opacity: 1;
   color: rgb(133 74 14 / var(--tw-text-opacity, 1));
-}
-.hover\:text-saffron-300:hover {
-  --tw-text-opacity: 1;
-  color: rgb(240 178 98 / var(--tw-text-opacity, 1));
 }
 .hover\:underline:hover {
   text-decoration-line: underline;
@@ -3397,10 +3397,6 @@ input[type='number'] {
 
   .sm\:block {
     display: block;
-  }
-
-  .sm\:inline-flex {
-    display: inline-flex;
   }
 
   .sm\:grid {
@@ -3745,10 +3741,6 @@ input[type='number'] {
 
   .lg\:inline {
     display: inline;
-  }
-
-  .lg\:flex {
-    display: flex;
   }
 
   .lg\:grid {
