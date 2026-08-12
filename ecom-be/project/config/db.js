@@ -24,7 +24,7 @@
 const mongoose = require('mongoose');
 
 const connectDB = async () => {
-  const uri = process.env.MONGODB_URI || "mongodb+srv://infotechagncy_db_user:DisORuMs1hAqkqF0@cluster0.ovehjph.mongodb.net/";
+  const uri = process.env.MONGODB_URI;
 
   console.log('[db] MONGODB_URI exists:', !!uri);
 

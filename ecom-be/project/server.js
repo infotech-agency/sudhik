@@ -51,17 +51,37 @@ app.use(errorHandler);
 // --- Start ---
 const PORT = process.env.PORT || 5000;
 
+// const start = async () => {
+//   await connectDB();
+//   app.listen(PORT, () => {
+//     console.log(`[server] E-commerce API running on port ${PORT}`);
+//     console.log(`[server] Environment: ${process.env.NODE_ENV || 'development'}`);
+//   });
+// };
+
 const start = async () => {
-  await connectDB();
-  app.listen(PORT, () => {
-    console.log(`[server] E-commerce API running on port ${PORT}`);
-    console.log(`[server] Environment: ${process.env.NODE_ENV || 'development'}`);
-  });
+  try {
+    await connectDB();
+
+    app.listen(PORT, () => {
+      console.log(`[server] E-commerce API running on port ${PORT}`);
+      console.log(
+        `[server] Environment: ${process.env.NODE_ENV || 'development'}`
+      );
+    });
+  } catch (error) {
+    console.error('[server] Failed to start:', error.message);
+    process.exit(1);
+  }
 };
 
-// Only start if this file is run directly (not when required by tests).
-if (require.main === module) {
-  start();
-}
+start();
+
+
+
+// // Only start if this file is run directly (not when required by tests).
+// if (require.main === module) {
+//   start();
+// }
 
 module.exports = app;
