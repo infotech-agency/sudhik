@@ -73,7 +73,7 @@ export default function ProductSection() {
   return (
     <>
       {/* ───────────────────────── Hero / breadcrumb band ───────────────────────── */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-[rgb(var(--color-maroon-950))] via-[rgb(var(--color-maroon-800))] to-[rgb(var(--color-maroon-950))] py-24 text-center">
+      <section data-header-theme="dark" className="relative overflow-hidden bg-gradient-to-b from-[rgb(var(--color-maroon-950))] via-[rgb(var(--color-maroon-800))] to-[rgb(var(--color-maroon-950))] py-24 text-center">
         {/* faint mandala backdrop */}
         <svg
           className="pointer-events-none absolute -right-24 -top-24 h-[420px] w-[420px] opacity-[0.06]"
