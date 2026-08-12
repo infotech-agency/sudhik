@@ -3,7 +3,7 @@
 // { success, data } / { message }.
 
 const BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || 'https://api.shuddhik.com';
+   'https://api.shuddhik.com';
 
 const TOKEN_KEY = 'shuddhik_token';
 
