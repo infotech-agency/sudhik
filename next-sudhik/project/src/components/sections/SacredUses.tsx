@@ -146,13 +146,13 @@ export default function SacredUses() {
   return (
     <section id="uses" className="relative py-24 sm:py-32 bg-sand/40 overflow-hidden">
       {/* full-width background image */}
-      <div className="absolute inset-0 z-0">
+      {/* <div className="absolute inset-0 z-0">
         <img
-          src="/backgrounds/banner.png"
+          src="/backgrounds/banner1.webp"
           alt=""
           className="w-full h-full object-cover"
         />
-      </div>
+      </div> */}
 
       {/* existing lotus-fade overlay, now sits above the bg image */}
       <div className="absolute inset-0 z-[1] bg-lotus-fade opacity-50 pointer-events-none" />
@@ -163,7 +163,7 @@ export default function SacredUses() {
           hindiTitle="पावन उपयोग"
           title={
             <>
-              For Every Sacred <span className="text-white">Space</span>
+                For Every Sacred <span className="text-black">Space</span>
             </>
           }
           // subtitle="From the quiet corner of a home mandir to the grand stone sanctums of Bharat."

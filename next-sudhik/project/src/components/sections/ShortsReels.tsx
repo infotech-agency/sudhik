@@ -41,15 +41,22 @@ export default function ShortsReels() {
   return (
     <section className="relative bg-ivory py-16 sm:py-24">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <div className="text-center mb-10 sm:mb-14">
+        {/* <div className="text-center mb-10 sm:mb-14">
           <span className="font-royal text-xs tracking-royal uppercase text-saffron-500">
             Dekhein
           </span>
           <h2 className="font-display text-3xl sm:text-4xl text-ink mt-3">
             Shorts &amp; Reels
           </h2>
-        </div>
-
+        </div> */}
+        <div className="text-center mb-10 sm:mb-14">
+  <span className="font-royal text-xs tracking-royal uppercase text-saffron-500">
+    What People Say
+  </span>
+  <h2 className="font-display text-3xl sm:text-4xl text-ink mt-3">
+    Reviews &amp; Testimonials
+  </h2>
+</div>
         {/* Mobile: horizontal snap-scroll · Desktop: grid */}
         <div
           className="

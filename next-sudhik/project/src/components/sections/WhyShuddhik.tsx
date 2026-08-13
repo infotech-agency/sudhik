@@ -209,19 +209,7 @@ export default function WhyShuddhik() {
         </div>
 <Divider maroon className="mt-24" />
         {/* full-width banner image — breaks out of the max-w-7xl container to span the full viewport */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.7 }}
-          className="relative mt-16 lg:mt-20 left-1/2 right-1/2 -mx-[50vw] w-screen"
-        >
-          <img
-            src="/assets/temple_banner.png"
-            alt="SHUDDHIK devotion in practice"
-            className="w-full h-[280px] sm:h-[380px] lg:h-[460px] object-cover"
-          />
-        </motion.div>
+        
 
         
       </div>

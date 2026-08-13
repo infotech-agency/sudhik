@@ -322,13 +322,27 @@ import Link from "next/link";
 import Button from "@/components/ui/Button";
 import ProductImage from "@/components/ui/ProductImage";
 import { productInfo } from "@/data/product";
+import { useEffect, useState } from "react";
+import { api } from "@/lib/api";
 
 export default function Hero() {
+   const [productSlug, setProductSlug] = useState("");
+   console.log("-->",productSlug)
+
+  useEffect(() => {
+    api.get("/api/products")
+      .then((products: any) => {
+        if (Array.isArray(products) && products.length > 0) {
+          setProductSlug(products[0].slug || products[0]._id);
+        }
+      })
+      .catch(() => {});
+  }, []);
   return (
     <section 
       className="relative min-h-screen flex items-center overflow-hidden bg-cover bg-center bg-no-repeat pt-16 sm:pt-20"
       style={{
-        backgroundImage: "url('/backgrounds/banner-soft.png')",
+        backgroundImage: "url('/backgrounds/bannersoft.webp')",
       }}
     >
       {/* Full-width grid – no overlay filters */}
@@ -386,11 +400,16 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 0.6 }}
             className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mt-6 sm:mt-9"
           >
-            <Link href="/products" className="w-full sm:w-auto">
+            {/* <Link href="/products" className="w-full sm:w-auto">
               <Button size="lg" variant="primary" className="w-full sm:w-auto">
                 Buy Now
               </Button>
-            </Link>
+            </Link> */}
+            <Link href={`/products/${productSlug}`} className="w-full sm:w-auto">
+  <Button size="lg" variant="primary" className="w-full sm:w-auto">
+    Buy Now
+  </Button>
+</Link>
             <Link href="/about" className="w-full sm:w-auto">
               <Button size="lg" variant="primary" className="w-full sm:w-auto">
                 Know More
