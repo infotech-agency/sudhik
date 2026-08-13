@@ -98,41 +98,79 @@ export const sacredUses = [
 export const howToSteps = [
   {
     step: 1,
-    title: 'Shake Gently',
-    description: 'Hold the bottle with reverence and shake gently to awaken the botanicals.',
+    title: 'बोतल को श्रद्धा से हिलाएं',
+    description: 'बोतल को हल्के हाथ से हिलाएं ताकि उसमें मौजूद प्राकृतिक तत्व अच्छी तरह जाग उठें।',
     icon: 'shuffle',
   },
   {
     step: 2,
-    title: 'Dilute with Devotion',
-    description: 'Add two caps of SHUDDHIK to a bowl of clean water. A little is enough.',
+    title: 'भक्ति भाव से घोल तैयार करें',
+    description: 'एक कटोरी स्वच्छ पानी में शुद्धिक की दो ढक्कन मात्रा मिलाएं। थोड़ी मात्रा ही पर्याप्त है।',
     icon: 'droplet',
   },
   {
     step: 3,
-    title: 'Dip a Soft Cloth',
-    description: 'Soak a soft cotton cloth in the sacred solution and wring out the excess.',
+    title: 'मुलायम कपड़ा भिगोएं',
+    description: 'मुलायम सूती कपड़े को पवित्र घोल में भिगोकर, अतिरिक्त पानी हल्के से निचोड़ लें।',
     icon: 'shirt',
   },
   {
     step: 4,
-    title: 'Wipe with Seva',
-    description: 'Gently wipe the mandir, idols and surfaces in slow, circular motions.',
+    title: 'सेवा भाव से पोंछें',
+    description: 'मंदिर, मूर्तियों और सतहों को धीमी, गोलाकार गति में सेवा भाव से पोंछें।',
     icon: 'hand',
   },
   {
     step: 5,
-    title: 'Let the Soot Lift',
-    description: 'For stubborn soot, let the surface stay damp for a minute before wiping.',
+    title: 'कालिख को हटने दें',
+    description: 'जिद्दी दागों के लिए, पोंछने से पहले सतह को एक मिनट तक गीला रहने दें।',
     icon: 'clock',
   },
   {
     step: 6,
-    title: 'Dry & Offer',
-    description: 'Pat dry with a clean cloth. Light your diya. The space is ready for prayer.',
+    title: 'सुखाएं और अर्पण करें',
+    description: 'साफ कपड़े से पोंछकर सुखाएं। अपना दीया जलाएं — स्थान अब पूजा के लिए तैयार है।',
     icon: 'sparkles',
   },
 ];
+// export const howToSteps = [
+//   {
+//     step: 1,
+//     title: 'Shake Gently',
+//     description: 'Hold the bottle with reverence and shake gently to awaken the botanicals.',
+//     icon: 'shuffle',
+//   },
+//   {
+//     step: 2,
+//     title: 'Dilute with Devotion',
+//     description: 'Add two caps of SHUDDHIK to a bowl of clean water. A little is enough.',
+//     icon: 'droplet',
+//   },
+//   {
+//     step: 3,
+//     title: 'Dip a Soft Cloth',
+//     description: 'Soak a soft cotton cloth in the sacred solution and wring out the excess.',
+//     icon: 'shirt',
+//   },
+//   {
+//     step: 4,
+//     title: 'Wipe with Seva',
+//     description: 'Gently wipe the mandir, idols and surfaces in slow, circular motions.',
+//     icon: 'hand',
+//   },
+//   {
+//     step: 5,
+//     title: 'Let the Soot Lift',
+//     description: 'For stubborn soot, let the surface stay damp for a minute before wiping.',
+//     icon: 'clock',
+//   },
+//   {
+//     step: 6,
+//     title: 'Dry & Offer',
+//     description: 'Pat dry with a clean cloth. Light your diya. The space is ready for prayer.',
+//     icon: 'sparkles',
+//   },
+// ];
 
 export const certifications = [
   { id: 'trademark', title: 'Trademark', subtitle: 'SHUDDHIK™', icon: 'badge-check' },

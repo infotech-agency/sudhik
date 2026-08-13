@@ -49,7 +49,7 @@ export default function ReturnsRefunds() {
               3. Refund Process
             </h2>
             <p className="text-[rgb(var(--color-ink-soft))]">
-              Once your request is approved and verified, refunds will be initiated to your original payment mode (or bank account for COD) within <strong>5–7 working days</strong>.
+              Once your request is approved and verified, refunds will be process to your original payment mode (or bank account for COD) within <strong>5–7 working days</strong>.
             </p>
           </section>
 

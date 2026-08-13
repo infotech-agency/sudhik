@@ -53,7 +53,7 @@ export default function HomePage() {
       <HowToUse />
       <Voices />
       <ShortsReels />
-      <FAQ />
+      {/* <FAQ /> */}
       <CTA />
     </>
   );
