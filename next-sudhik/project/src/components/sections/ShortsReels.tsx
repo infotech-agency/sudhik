@@ -18,7 +18,7 @@ export default function ShortsReels() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/videos`)
+    fetch(`https://api.shuddhik.com/api/videos`)
       .then((res) => res.json())
       .then((json) => {
         const active = (json?.data || []).filter((v: Video) => v.isActive);

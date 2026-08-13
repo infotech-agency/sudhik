@@ -410,7 +410,7 @@ export default function Hero() {
     Buy Now
   </Button>
 </Link>
-            <Link href="/about" className="w-full sm:w-auto">
+            <Link href="/product" className="w-full sm:w-auto">
               <Button size="lg" variant="primary" className="w-full sm:w-auto">
                 Know More
               </Button>

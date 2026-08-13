@@ -11,14 +11,6 @@ import CTA from '@/components/sections/CTA';
 
 export const dynamic = 'force-dynamic';
 
-// async function getProduct(idOrSlug: string): Promise<Product | null> {
-//   try {
-//     return await api.get<Product>(`/api/products/${idOrSlug}`);
-//   } catch (err) {
-//     if (err instanceof ApiError && err.status === 404) return null;
-//     return null;
-//   }
-// }
 async function getProduct(idOrSlug: string): Promise<Product | null> {
   try {
     return await api.get<Product>(`/api/products/${idOrSlug}`);
