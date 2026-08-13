@@ -183,7 +183,7 @@ export default function Philosophy() {
           >
             <motion.img
               style={{ y }}
-              src="/assets/producthero.png"
+              src="/product/product.png"
               alt="Temple interior with diya lamps and sacred ambience"
               className="absolute inset-0 w-full h-[116%] object-contain"
             />

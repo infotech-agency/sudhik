@@ -1860,6 +1860,9 @@ video {
 .bg-ivory\/10 {
   background-color: rgb(255 248 240 / 0.1);
 }
+.bg-ivory\/5 {
+  background-color: rgb(255 248 240 / 0.05);
+}
 .bg-ivory\/60 {
   background-color: rgb(255 248 240 / 0.6);
 }
@@ -1929,9 +1932,6 @@ video {
 }
 .bg-white\/80 {
   background-color: rgb(255 255 255 / 0.8);
-}
-.bg-ivory\/5 {
-  background-color: rgb(255 248 240 / 0.05);
 }
 .bg-gold-line {
   background-image: linear-gradient(90deg, transparent, rgba(212,175,55,0.7), transparent);
@@ -2350,6 +2350,9 @@ video {
 .pt-3 {
   padding-top: 0.75rem;
 }
+.pt-4 {
+  padding-top: 1rem;
+}
 .pt-5 {
   padding-top: 1.25rem;
 }
@@ -2358,9 +2361,6 @@ video {
 }
 .pt-8 {
   padding-top: 2rem;
-}
-.pt-4 {
-  padding-top: 1rem;
 }
 .text-left {
   text-align: left;
@@ -2571,6 +2571,9 @@ video {
 .text-gold-200\/80 {
   color: rgb(239 217 137 / 0.8);
 }
+.text-gold-200\/90 {
+  color: rgb(239 217 137 / 0.9);
+}
 .text-gold-300 {
   --tw-text-opacity: 1;
   color: rgb(229 196 90 / var(--tw-text-opacity, 1));
@@ -2733,9 +2736,6 @@ video {
 }
 .text-white\/90 {
   color: rgb(255 255 255 / 0.9);
-}
-.text-gold-200\/90 {
-  color: rgb(239 217 137 / 0.9);
 }
 .line-through {
   text-decoration-line: line-through;
@@ -3392,6 +3392,10 @@ input[type='number'] {
     margin-bottom: 0.75rem;
   }
 
+  .sm\:mt-32 {
+    margin-top: 8rem;
+  }
+
   .sm\:mt-4 {
     margin-top: 1rem;
   }
@@ -3402,10 +3406,6 @@ input[type='number'] {
 
   .sm\:mt-9 {
     margin-top: 2.25rem;
-  }
-
-  .sm\:mt-32 {
-    margin-top: 8rem;
   }
 
   .sm\:block {

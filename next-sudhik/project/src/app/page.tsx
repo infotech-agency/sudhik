@@ -46,8 +46,10 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <WhyShuddhik />
+
       <Philosophy />
+      <WhyShuddhik />
+      
       <SacredUses />
       <Ingredients />
       <HowToUse />
