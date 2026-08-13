@@ -165,7 +165,7 @@ export default function ProductInfoTabs({ product }: { product: Product }) {
                   <dl className="space-y-3">
                     {[
                       ['Price', `₹${product.price}`],
-                      ['Stock', `${product.stock} available`],
+                      // ['Stock', `${product.stock} available`],
                       ['Specifications', product.specifications || '—'],
                       ['Shipping', product.shippingInfo || 'Ships in 1–2 days'],
                     ].map(([k, v]) => (
