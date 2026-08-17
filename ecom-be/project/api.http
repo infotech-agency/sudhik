@@ -1,6 +1,6 @@
 ### E-commerce Backend API tests (REST Client format)
 ### Base URL — adjust if your server runs on a different port
-@baseUrl = https://api.shuddhik.com
+@baseUrl = http://localhost:5000
 @adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNjg1NTU3MTUyZGVkOThmMmJiYzRiZSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc4NTIyMjQ4NywiZXhwIjoxNzg1MzA4ODg3fQ.X0qL1ym2mWXMU3y0Si-jIONWHeXkEfIhrbPyZ7WeM_Q
 @userToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNjg1NTZiMTUyZGVkOThmMmJiYzRjMSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzg1MjIyNTA3LCJleHAiOjE3ODUzMDg5MDd9.SjHEsytARVq8LZMZH7HJbDhCb8KeJS2xUm53-Gol8x4
 @cartToken =
@@ -336,7 +336,7 @@ Content-Type: application/json
 
 {
   "items": [
-    { "productId": "{{productId}}", "quantity": 1 }
+    { "productId": "6a7c21cacef97c08155bb5a7", "quantity": 1 }
   ],
   "paymentMethod": "ONLINE",
   "shippingAddress": {

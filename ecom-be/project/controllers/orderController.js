@@ -184,7 +184,8 @@ if (!userId && shippingAddress.email) {
 
   // ONLINE
   const merchantTransactionId = shortId('MTX_');
-  const redirectUrl = `${process.env.PHONEPE_REDIRECT_URL || 'http://localhost:3000/payment/status'}?mtx=${merchantTransactionId}`;
+  // const redirectUrl = `${process.env.PHONEPE_REDIRECT_URL || 'http://localhost:3000/payment/status'}?mtx=${merchantTransactionId}`;
+  const redirectUrl = `${process.env.PHONEPE_REDIRECT_URL}?merchantTransactionId=${merchantTransactionId}`;
 
   const order = await Order.create({
     ...baseOrder,
@@ -199,7 +200,14 @@ if (!userId && shippingAddress.email) {
     mobileNumber: shippingAddress.phone,
   });
 
-  success(res, { order, paymentUrl: result.paymentUrl }, 'Payment initiated', 201);
+  // success(res, { order, paymentUrl: result.paymentUrl }, 'Payment initiated', 201);
+  success(res, { 
+  order, 
+  paymentUrl: result.paymentUrl, 
+  merchantTransactionId  // ye line add karo
+}, 'Payment initiated', 201);
+  
+
 });
 
 /**
