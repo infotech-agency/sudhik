@@ -45,8 +45,8 @@ const env = process.env.PHONEPE_ENV || 'UAT';
 const isProd = env === 'PROD';
 
 module.exports = {
-  clientId: process.env.PHONEPE_CLIENT_ID || '',
-  clientSecret: process.env.PHONEPE_CLIENT_SECRET || '',
+  clientId: process.env.PHONEPE_CLIENT_ID || 'SU2608141543518572180192',
+  clientSecret: process.env.PHONEPE_CLIENT_SECRET || '8f64c593-b415-4121-ac37-5a0b064ef3',
   clientVersion: process.env.PHONEPE_CLIENT_VERSION || '1',
 
   env,

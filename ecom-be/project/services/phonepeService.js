@@ -352,9 +352,9 @@ async function getAccessToken() {
   const url = `${config.authBaseUrl}/v1/oauth/token`;
 
   const body = new URLSearchParams({
-    client_id: config.clientId,
-    client_version: config.clientVersion,
-    client_secret: config.clientSecret,
+    client_id: config.clientId || "SU2608141543518572180192",
+    client_version: config.clientVersion || "1",
+    client_secret: config.clientSecret || "8f64c593-b415-4121-ac37-5a0b064ef3f3",
     grant_type: 'client_credentials',
   });
 
