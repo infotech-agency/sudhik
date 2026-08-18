@@ -752,6 +752,9 @@ video {
 .invisible {
   visibility: hidden;
 }
+.static {
+  position: static;
+}
 .fixed {
   position: fixed;
 }
@@ -1025,6 +1028,9 @@ video {
 .mt-auto {
   margin-top: auto;
 }
+.mt-0 {
+  margin-top: 0px;
+}
 .line-clamp-2 {
   overflow: hidden;
   display: -webkit-box;
@@ -1189,6 +1195,9 @@ video {
 }
 .min-h-screen {
   min-height: 100vh;
+}
+.min-h-0 {
+  min-height: 0px;
 }
 .w-0 {
   width: 0px;
@@ -1627,6 +1636,9 @@ video {
 }
 .overflow-y-auto {
   overflow-y: auto;
+}
+.overflow-x-hidden {
+  overflow-x: hidden;
 }
 .truncate {
   overflow: hidden;
@@ -2280,6 +2292,10 @@ video {
 .py-8 {
   padding-top: 2rem;
   padding-bottom: 2rem;
+}
+.px-3\.5 {
+  padding-left: 0.875rem;
+  padding-right: 0.875rem;
 }
 .\!pb-14 {
   padding-bottom: 3.5rem !important;
@@ -3415,6 +3431,26 @@ input[type='number'] {
     margin-top: 2.25rem;
   }
 
+  .sm\:mt-16 {
+    margin-top: 4rem;
+  }
+
+  .sm\:mt-24 {
+    margin-top: 6rem;
+  }
+
+  .sm\:mt-28 {
+    margin-top: 7rem;
+  }
+
+  .sm\:mb-4 {
+    margin-bottom: 1rem;
+  }
+
+  .sm\:mb-5 {
+    margin-bottom: 1.25rem;
+  }
+
   .sm\:block {
     display: block;
   }
@@ -3443,6 +3479,10 @@ input[type='number'] {
     height: 88px;
   }
 
+  .sm\:h-9 {
+    height: 2.25rem;
+  }
+
   .sm\:max-h-\[82vh\] {
     max-height: 82vh;
   }
@@ -3469,6 +3509,10 @@ input[type='number'] {
 
   .sm\:w-auto {
     width: auto;
+  }
+
+  .sm\:w-9 {
+    width: 2.25rem;
   }
 
   .sm\:max-w-\[85vw\] {
@@ -3509,6 +3553,10 @@ input[type='number'] {
 
   .sm\:gap-5 {
     gap: 1.25rem;
+  }
+
+  .sm\:gap-10 {
+    gap: 2.5rem;
   }
 
   .sm\:overflow-visible {
@@ -3571,6 +3619,11 @@ input[type='number'] {
     padding-bottom: 1.25rem;
   }
 
+  .sm\:py-3\.5 {
+    padding-top: 0.875rem;
+    padding-bottom: 0.875rem;
+  }
+
   .sm\:pt-20 {
     padding-top: 5rem;
   }
@@ -3581,6 +3634,10 @@ input[type='number'] {
 
   .sm\:pt-32 {
     padding-top: 8rem;
+  }
+
+  .sm\:pt-10 {
+    padding-top: 2.5rem;
   }
 
   .sm\:text-left {
@@ -3834,6 +3891,11 @@ input[type='number'] {
   .lg\:px-8 {
     padding-left: 2rem;
     padding-right: 2rem;
+  }
+
+  .lg\:py-32 {
+    padding-top: 8rem;
+    padding-bottom: 8rem;
   }
 
   .lg\:text-7xl {

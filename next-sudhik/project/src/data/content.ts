@@ -194,12 +194,12 @@ export const trustCards = [
     description: 'From Varanasi to Rameswaram, temple trusts rely on SHUDDHIK for seva.',
     stat: '127',
   },
-  {
-    id: 't3',
-    title: '4.9 / 5 Rating',
-    description: 'Verified buyers consistently describe SHUDDHIK as devotion in a bottle.',
-    stat: '4.9★',
-  },
+  // {
+  //   id: 't3',
+  //   title: '4.9 / 5 Rating',
+  //   description: 'Verified buyers consistently describe SHUDDHIK as devotion in a bottle.',
+  //   stat: '4.9★',
+  // },
   {
     id: 't4',
     title: '100% Natural Formula',
