@@ -7,7 +7,16 @@ const faqSchema = new mongoose.Schema(
   },
   { _id: false }
 );
-
+const variantSchema = new mongoose.Schema(
+  {
+    label: { type: String, required: true, trim: true }, // "Single", "Pack of 2"
+    price: { type: Number, required: true, min: 0 },
+    discountPrice: { type: Number, default: 0, min: 0 },
+    stock: { type: Number, required: true, min: 0, default: 0 },
+    sku: { type: String, default: null, trim: true },
+  },
+  { _id: false }
+);
 const productSchema = new mongoose.Schema(
   {
     title: { type: String, required: true, trim: true, index: true },
@@ -36,6 +45,7 @@ const productSchema = new mongoose.Schema(
     shippingInfo: { type: String, default: '' },
     productInformation: { type: String, default: '' },
     faqs: { type: [faqSchema], default: [] },
+      variants: { type: [variantSchema], default: [] },
     // Denormalized review summary, updated by reviewService.
     averageRating: { type: Number, default: 0, min: 0, max: 5 },
     reviewCount: { type: Number, default: 0, min: 0 },

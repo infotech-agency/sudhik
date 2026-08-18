@@ -12,10 +12,40 @@ const { generateToken } = require('../utils/generateToken');
  * Validate line items against current product records, compute the total, and
  * decrement stock atomically. Throws on any invalid item / insufficient stock.
  */
+// async function validateAndPriceItems(items) {
+//   let total = 0;
+//   const priced = [];
+  
+//   for (const it of items) {
+//     const product = await Product.findById(it.productId);
+//     if (!product || !product.isActive) {
+//       const err = new Error(`Product ${it.productId} not available`);
+//       err.status = 400;
+//       throw err;
+//     }
+//     const qty = Number(it.quantity);
+//     if (product.stock < qty) {
+//       const err = new Error(`Insufficient stock for ${product.title} (have ${product.stock}, need ${qty})`);
+//       err.status = 400;
+//       throw err;
+//     }
+//     const lineTotal = product.price * qty;
+//     total += lineTotal;
+//     priced.push({
+//       product: product._id,
+//       name: product.title,
+//       quantity: qty,
+//       price: product.price,
+//     });
+//   }
+
+//   return { priced, total };
+// }
+
 async function validateAndPriceItems(items) {
   let total = 0;
   const priced = [];
-  
+
   for (const it of items) {
     const product = await Product.findById(it.productId);
     if (!product || !product.isActive) {
@@ -23,19 +53,42 @@ async function validateAndPriceItems(items) {
       err.status = 400;
       throw err;
     }
+
     const qty = Number(it.quantity);
-    if (product.stock < qty) {
-      const err = new Error(`Insufficient stock for ${product.title} (have ${product.stock}, need ${qty})`);
+
+    // ---- Resolve price + stock: variant-aware ----
+    let unitPrice = product.discountPrice || product.price;
+    let availableStock = product.stock;
+    let matchedVariant = null;
+
+    if (it.variantLabel) {
+      matchedVariant = (product.variants || []).find((v) => v.label === it.variantLabel);
+      if (!matchedVariant) {
+        const err = new Error(`Variant "${it.variantLabel}" not found for ${product.title}`);
+        err.status = 400;
+        throw err;
+      }
+      unitPrice = matchedVariant.discountPrice || matchedVariant.price;
+      availableStock = matchedVariant.stock;
+    }
+
+    if (availableStock < qty) {
+      const err = new Error(
+        `Insufficient stock for ${product.title}${matchedVariant ? ` (${matchedVariant.label})` : ''} (have ${availableStock}, need ${qty})`
+      );
       err.status = 400;
       throw err;
     }
-    const lineTotal = product.price * qty;
+
+    const lineTotal = unitPrice * qty;
     total += lineTotal;
     priced.push({
       product: product._id,
       name: product.title,
       quantity: qty,
-      price: product.price,
+      price: unitPrice,               // 👈 ab sahi variant price
+      variantLabel: matchedVariant ? matchedVariant.label : undefined,
+      variantSku: matchedVariant ? matchedVariant.sku : undefined,
     });
   }
 
