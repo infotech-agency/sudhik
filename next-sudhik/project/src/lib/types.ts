@@ -9,7 +9,13 @@ export interface Faq {
   question: string;
   answer: string;
 }
-
+export interface Variant {
+  label: string;
+  price: number;
+  discountPrice?: number;
+  stock: number;
+  sku?: string;
+}
 export interface Product {
   _id: string;
   title: string;
@@ -25,6 +31,7 @@ export interface Product {
   shippingInfo: string;
   productInformation: string;
   faqs: Faq[];
+    variants?: Variant[]; 
   category?: string;
   isActive?: boolean;
   createdAt?: string;

@@ -1292,6 +1292,9 @@ video {
 .min-w-0 {
   min-width: 0px;
 }
+.min-w-\[110px\] {
+  min-width: 110px;
+}
 .max-w-2xl {
   max-width: 42rem;
 }
@@ -1425,6 +1428,9 @@ video {
 .animate-spin {
   animation: spin 1s linear infinite;
 }
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
 .cursor-pointer {
   cursor: pointer;
 }
@@ -1495,9 +1501,6 @@ video {
 }
 .justify-between {
   justify-content: space-between;
-}
-.gap-0 {
-  gap: 0px;
 }
 .gap-0\.5 {
   gap: 0.125rem;
@@ -1847,9 +1850,6 @@ video {
 .bg-ink\/40 {
   background-color: rgb(26 26 26 / 0.4);
 }
-.bg-ink\/60 {
-  background-color: rgb(26 26 26 / 0.6);
-}
 .bg-ink\/90 {
   background-color: rgb(26 26 26 / 0.9);
 }
@@ -2126,9 +2126,6 @@ video {
 .fill-gold-400 {
   fill: #D4AF37;
 }
-.fill-maroon-500 {
-  fill: #7A1E2E;
-}
 .fill-saffron-500 {
   fill: #C97A1A;
 }
@@ -2148,9 +2145,6 @@ video {
 }
 .p-12 {
   padding: 3rem;
-}
-.p-16 {
-  padding: 4rem;
 }
 .p-2 {
   padding: 0.5rem;
@@ -2419,9 +2413,6 @@ video {
 .text-\[11px\] {
   font-size: 11px;
 }
-.text-\[13px\] {
-  font-size: 13px;
-}
 .text-\[15px\] {
   font-size: 15px;
 }
@@ -2602,6 +2593,10 @@ video {
 }
 .text-gold-400\/60 {
   color: rgb(212 175 55 / 0.6);
+}
+.text-gold-500 {
+  --tw-text-opacity: 1;
+  color: rgb(184 150 42 / var(--tw-text-opacity, 1));
 }
 .text-green-700 {
   --tw-text-opacity: 1;
@@ -2808,6 +2803,15 @@ video {
 }
 .outline {
   outline-style: solid;
+}
+.ring-1 {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.ring-saffron-500 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(201 122 26 / var(--tw-ring-opacity, 1));
 }
 .blur-2xl {
   --tw-blur: blur(40px);
@@ -3091,6 +3095,9 @@ input[type='number'] {
 }
 .hover\:border-gold-400\/50:hover {
   border-color: rgb(212 175 55 / 0.5);
+}
+.hover\:border-gold-400\/60:hover {
+  border-color: rgb(212 175 55 / 0.6);
 }
 .hover\:border-maroon-500\/30:hover {
   border-color: rgb(122 30 46 / 0.3);
@@ -3674,14 +3681,6 @@ input[type='number'] {
 
   .md\:gap-10 {
     gap: 2.5rem;
-  }
-
-  .md\:border-l {
-    border-left-width: 1px;
-  }
-
-  .md\:border-t-0 {
-    border-top-width: 0px;
   }
 
   .md\:p-8 {
