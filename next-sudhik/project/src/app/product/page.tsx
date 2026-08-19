@@ -1,3 +1,4 @@
+
 // import Image from "next/image";
 // import {
 //   Droplets,
@@ -69,7 +70,27 @@
 //   },
 // ];
 
-// export default function ProductSection() {
+// async function getProductSlug(): Promise<string | null> {
+//   try {
+//     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`, {
+//       cache: 'no-store',
+//     });
+//     if (!res.ok) return null;
+//     const json = await res.json();
+//     const products = Array.isArray(json?.data) ? json.data : Array.isArray(json) ? json : [];
+//     if (products.length > 0) {
+//       return products[0].slug || products[0]._id || null;
+//     }
+//     return null;
+//   } catch {
+//     return null;
+//   }
+// }
+
+// export default async function ProductSection() {
+//   const productSlug = await getProductSlug();
+//   const buyNowHref = productSlug ? `/products/${productSlug}` : '/products';
+
 //   return (
 //     <>
 //       {/* ───────────────────────── Hero / breadcrumb band ───────────────────────── */}
@@ -167,7 +188,7 @@
 //               <p className="text-saffron-gradient font-royal text-3xl">
 //                 ₹ 300 <span className="text-base text-[rgb(var(--color-ink-soft))]">/ 500 ml</span>
 //               </p>
-//               <Link href="/products" className="shadow-gold group inline-flex items-center gap-2 rounded-full bg-[rgb(var(--color-saffron-500))] px-7 py-3 text-sm font-semibold text-[rgb(var(--color-ivory))] transition hover:bg-[rgb(var(--color-saffron-600))]">
+//               <Link href={buyNowHref} className="shadow-gold group inline-flex items-center gap-2 rounded-full bg-[rgb(var(--color-saffron-500))] px-7 py-3 text-sm font-semibold text-[rgb(var(--color-ivory))] transition hover:bg-[rgb(var(--color-saffron-600))]">
 //                 Buy Now
 //                 <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
 //               </Link>
@@ -242,16 +263,7 @@
 //                 {subtitle}
 //               </p>
 //               <p className="mt-2 text-sm text-[rgb(var(--color-ink-soft))]">{note}</p>
-//               {/* <button
-//                 className={`mt-6 rounded-full px-6 py-2.5 text-sm font-semibold transition ${
-//                   highlight
-//                     ? "shadow-gold bg-[rgb(var(--color-saffron-500))] text-[rgb(var(--color-ivory))] hover:bg-[rgb(var(--color-saffron-600))]"
-//                     : "bg-[rgb(var(--color-gold-400))] text-[rgb(var(--color-ink))] hover:bg-[rgb(var(--color-gold-500))]"
-//                 }`}
-//               >
-//                 {cta}
-//               </button> */}
-//               <Link href="/products" className="shadow-gold group inline-flex items-center gap-2 rounded-full bg-[rgb(var(--color-saffron-500))] px-7 py-3 text-sm font-semibold text-[rgb(var(--color-ivory))] transition hover:bg-[rgb(var(--color-saffron-600))]">
+//               <Link href={buyNowHref} className="shadow-gold group inline-flex items-center gap-2 rounded-full bg-[rgb(var(--color-saffron-500))] px-7 py-3 text-sm font-semibold text-[rgb(var(--color-ivory))] transition hover:bg-[rgb(var(--color-saffron-600))]">
 //                 Buy Now
 //                 <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
 //               </Link>
@@ -271,7 +283,7 @@
 //         <p className="mt-4 text-sm text-[rgb(var(--color-gold-200))]/85">
 //           Order for your sacred space today.
 //         </p>
-//         <Link href="/products" className="shadow-gold group inline-flex items-center gap-2 rounded-full bg-[rgb(var(--color-saffron-500))] px-7 py-3 text-sm font-semibold text-[rgb(var(--color-ivory))] transition hover:bg-[rgb(var(--color-saffron-600))]">
+//         <Link href={buyNowHref} className="shadow-gold group inline-flex items-center gap-2 rounded-full bg-[rgb(var(--color-saffron-500))] px-7 py-3 text-sm font-semibold text-[rgb(var(--color-ivory))] transition hover:bg-[rgb(var(--color-saffron-600))]">
 //                 Buy Now
 //                 <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
 //               </Link>
@@ -279,6 +291,7 @@
 //     </>
 //   );
 // }
+
 import Image from "next/image";
 import {
   Droplets,
@@ -308,9 +321,9 @@ import Link from "next/link";
 
 const PRODUCT_FEATURES = [
   "Natural sandalwood fragrance",
-  "pH-balanced — safe for hands and idols",
-  "Marble, tiles, granite & wood — including statues and altars",
-  "Biodegradable formula",
+  "pH-balanced — safe for hands, idols & wooden temples",
+  "Wood, marble, tiles & granite — including statues and altars",
+  "Gentle, safe & non-damaging surface protection",
   "Proudly Made in India",
 ];
 
@@ -318,8 +331,8 @@ const PRODUCT_DETAILS = [
   { label: "Product Name", value: "SHUDDHIK™ Temple & Sacred Surface Cleaner" },
   { label: "Volume", value: "500 ml (spray bottle)" },
   { label: "Fragrance", value: "Pure Sandalwood" },
-  { label: "Suitable Surfaces", value: "Marble, tiles, granite, wood — statues and puja altars" },
-  { label: "Formula", value: "pH-balanced, biodegradable" },
+  { label: "Suitable Surfaces", value: "Wood, marble, tiles, granite — statues and puja altars" },
+  { label: "Formula", value: "pH-balanced, surface-safe formula" },
   { label: "Manufactured", value: "Made in India 🇮🇳" },
 ];
 
@@ -328,7 +341,7 @@ const PACKS = [
     icon: Droplets,
     title: "Single Pack",
     subtitle: "500 ml × 1",
-    note: "Perfect for your home altar",
+    note: "Perfect for your home altar or wooden mandir",
     cta: "Buy Now",
     highlight: false,
   },
@@ -409,8 +422,8 @@ export default async function ProductSection() {
         </p>
         <h1 className="font-royal text-gold-gradient text-5xl sm:text-6xl">Products</h1>
         <p className="mx-auto mt-5 max-w-xl px-6 text-[15px] leading-relaxed text-[rgb(var(--color-gold-200))]/90">
-          SHUDDHIK™ Temple &amp; Sacred Surface Cleaner — a specially crafted
-          cleaner made for sacred spaces.
+          SHUDDHIK™ Temple &amp; Sacred Surface Cleaner — specially crafted
+          for wooden temples, marble altars, and all sacred spaces.
         </p>
 
         <div className="mt-8 flex items-center justify-center gap-4 text-[rgb(var(--color-gold-400))]">
@@ -427,7 +440,7 @@ export default async function ProductSection() {
           <div className="lift shadow-premium relative overflow-hidden rounded-2xl border border-[rgba(212,175,55,0.28)]">
             <Image
               src="/product/poster.jpg"
-              alt="SHUDDHIK Temple & Sacred Surface Cleaner, 500ml spray bottle"
+              alt="SHUDDHIK Temple & Sacred Surface Cleaner for wood, marble, and granite"
               width={900}
               height={1080}
               className="h-full w-full object-cover"
@@ -438,7 +451,7 @@ export default async function ProductSection() {
           {/* Details */}
           <div>
             <p className="text-xs font-semibold tracking-[0.3em] text-[rgb(var(--color-saffron-600))]">
-              TEMPLE &amp; SACRED SURFACE CLEANER
+              WOOD, MARBLE, GRANITE &amp; SACRED SURFACE CLEANER
             </p>
             <h2 className="font-royal mt-2 text-4xl text-[rgb(var(--color-maroon-800))] sm:text-5xl">
               SHUDDHIK™
@@ -446,9 +459,8 @@ export default async function ProductSection() {
             <div className="gold-divider mt-5 h-px w-24" />
 
             <p className="mt-6 text-[15px] leading-relaxed text-[rgb(var(--color-ink-soft))]">
-              Gently lifts away oil-lamp soot, incense residue and everyday
-              puja stains — leaving behind nothing but the pure scent of
-              sandalwood.
+              Gently lifts away oil-lamp soot, incense residue, and everyday
+              puja stains from wooden mandirs, marble altars, and statues — leaving behind nothing but the pure scent of sandalwood.
             </p>
 
             <ul className="mt-6 space-y-3">
@@ -543,7 +555,7 @@ export default async function ProductSection() {
                 {subtitle}
               </p>
               <p className="mt-2 text-sm text-[rgb(var(--color-ink-soft))]">{note}</p>
-              <Link href={buyNowHref} className="shadow-gold group inline-flex items-center gap-2 rounded-full bg-[rgb(var(--color-saffron-500))] px-7 py-3 text-sm font-semibold text-[rgb(var(--color-ivory))] transition hover:bg-[rgb(var(--color-saffron-600))]">
+              <Link href={buyNowHref} className="shadow-gold group mt-6 inline-flex items-center gap-2 rounded-full bg-[rgb(var(--color-saffron-500))] px-7 py-3 text-sm font-semibold text-[rgb(var(--color-ivory))] transition hover:bg-[rgb(var(--color-saffron-600))]">
                 Buy Now
                 <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
               </Link>
@@ -563,10 +575,10 @@ export default async function ProductSection() {
         <p className="mt-4 text-sm text-[rgb(var(--color-gold-200))]/85">
           Order for your sacred space today.
         </p>
-        <Link href={buyNowHref} className="shadow-gold group inline-flex items-center gap-2 rounded-full bg-[rgb(var(--color-saffron-500))] px-7 py-3 text-sm font-semibold text-[rgb(var(--color-ivory))] transition hover:bg-[rgb(var(--color-saffron-600))]">
-                Buy Now
-                <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
-              </Link>
+        <Link href={buyNowHref} className="shadow-gold group mt-6 inline-flex items-center gap-2 rounded-full bg-[rgb(var(--color-saffron-500))] px-7 py-3 text-sm font-semibold text-[rgb(var(--color-ivory))] transition hover:bg-[rgb(var(--color-saffron-600))]">
+          Buy Now
+          <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+        </Link>
       </section>
     </>
   );
