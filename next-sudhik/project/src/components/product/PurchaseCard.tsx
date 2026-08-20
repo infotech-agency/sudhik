@@ -150,7 +150,7 @@ const getHighlightIcon = (text: string) => {
         className="relative p-7 sm:p-8 rounded-3xl bg-white border border-gold-400/20 shadow-premium"
       >
         {/* Stock status */}
-        <div className="flex items-center justify-between">
+        {/* <div className="flex items-center justify-between">
           <span className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full border ${inStock ? 'bg-saffron-50 border-saffron-500/20' : 'bg-maroon-50 border-maroon-500/20'}`}>
             <span className={`w-1.5 h-1.5 rounded-full ${inStock ? 'bg-saffron-500 animate-auraPulse' : 'bg-maroon-500'}`} />
             <span className={`font-royal text-xs tracking-royal uppercase font-medium ${inStock ? 'text-saffron-600' : 'text-maroon-500'}`}>
@@ -160,7 +160,7 @@ const getHighlightIcon = (text: string) => {
           <span className="font-royal text-xs tracking-royal uppercase text-ink/60">
             {activeStock} left
           </span>
-        </div>
+        </div> */}
 
         {/* Title */}
         <h1 className="font-display text-4xl sm:text-5xl text-ink mt-5 leading-tight">

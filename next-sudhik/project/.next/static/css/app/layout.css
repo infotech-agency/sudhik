@@ -752,6 +752,9 @@ video {
 .invisible {
   visibility: hidden;
 }
+.collapse {
+  visibility: collapse;
+}
 .static {
   position: static;
 }
@@ -837,6 +840,9 @@ video {
 .right-0 {
   right: 0px;
 }
+.right-1 {
+  right: 0.25rem;
+}
 .right-1\/2 {
   right: 50%;
 }
@@ -857,6 +863,9 @@ video {
 }
 .top-0 {
   top: 0px;
+}
+.top-1 {
+  top: 0.25rem;
 }
 .top-1\/2 {
   top: 50%;
@@ -1688,6 +1697,9 @@ video {
 .border-t {
   border-top-width: 1px;
 }
+.border-dashed {
+  border-style: dashed;
+}
 .border-\[rgb\(var\(--color-gold-400\)\)\] {
   border-color: rgb(var(--color-gold-400));
 }
@@ -1780,9 +1792,6 @@ video {
 .border-t-transparent {
   border-top-color: transparent;
 }
-.bg-\[rgb\(var\(--color-gold-400\)\)\] {
-  background-color: rgb(var(--color-gold-400));
-}
 .bg-\[rgb\(var\(--color-gold-500\)\)\] {
   background-color: rgb(var(--color-gold-500));
 }
@@ -1852,6 +1861,9 @@ video {
 }
 .bg-ink\/40 {
   background-color: rgb(26 26 26 / 0.4);
+}
+.bg-ink\/70 {
+  background-color: rgb(26 26 26 / 0.7);
 }
 .bg-ink\/90 {
   background-color: rgb(26 26 26 / 0.9);
@@ -3109,9 +3121,6 @@ input[type='number'] {
 .hover\:border-maroon-500\/30:hover {
   border-color: rgb(122 30 46 / 0.3);
 }
-.hover\:bg-\[rgb\(var\(--color-gold-500\)\)\]:hover {
-  background-color: rgb(var(--color-gold-500));
-}
 .hover\:bg-\[rgb\(var\(--color-saffron-600\)\)\]:hover {
   background-color: rgb(var(--color-saffron-600));
 }
@@ -3416,14 +3425,6 @@ input[type='number'] {
 
   .sm\:mt-16 {
     margin-top: 4rem;
-  }
-
-  .sm\:mt-24 {
-    margin-top: 6rem;
-  }
-
-  .sm\:mt-28 {
-    margin-top: 7rem;
   }
 
   .sm\:mt-32 {
@@ -3791,10 +3792,6 @@ input[type='number'] {
     margin-top: 5rem;
   }
 
-  .lg\:mt-24 {
-    margin-top: 6rem;
-  }
-
   .lg\:block {
     display: block;
   }
@@ -3882,11 +3879,6 @@ input[type='number'] {
   .lg\:px-8 {
     padding-left: 2rem;
     padding-right: 2rem;
-  }
-
-  .lg\:py-32 {
-    padding-top: 8rem;
-    padding-bottom: 8rem;
   }
 
   .lg\:text-7xl {

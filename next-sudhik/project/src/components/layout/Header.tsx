@@ -571,7 +571,7 @@ export default function Header() {
     { label: 'Sacred Uses', href: '/', section: 'uses' },
     { label: 'Blog', href: '/blog' },
     { label: 'Product Information', href: '/product', section: 'reviews' },
-    { label: 'Reviews', href: '/products', section: 'reviews' },
+    // { label: 'Reviews', href: '/products', section: 'reviews' },
   ];
 
   const leftLinks = navLinks.slice(0, Math.ceil(navLinks.length / 2));

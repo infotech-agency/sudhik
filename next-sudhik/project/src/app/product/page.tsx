@@ -478,7 +478,7 @@ export default async function ProductSection() {
 
             <div className="mt-8 flex flex-wrap items-center gap-5">
               <p className="text-saffron-gradient font-royal text-3xl">
-                ₹ 300 <span className="text-base text-[rgb(var(--color-ink-soft))]">/ 500 ml</span>
+                ₹ 299 <span className="text-base text-[rgb(var(--color-ink-soft))]">/ 500 ml</span>
               </p>
               <Link href={buyNowHref} className="shadow-gold group inline-flex items-center gap-2 rounded-full bg-[rgb(var(--color-saffron-500))] px-7 py-3 text-sm font-semibold text-[rgb(var(--color-ivory))] transition hover:bg-[rgb(var(--color-saffron-600))]">
                 Buy Now

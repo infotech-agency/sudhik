@@ -363,7 +363,7 @@ export default function BuyNowModal() {
                       </p>
                       <div className="space-y-2">
                         {([
-                          ['COD', 'Cash on Delivery', 'Pay when it arrives'],
+                          ['COD', 'Cash on Delivery + ₹49 Delivery Charges', 'Pay when it arrives'],
                           ['ONLINE', 'Online Payment', 'UPI / Cards via PhonePe'],
                         ] as const).map(([val, title, sub]) => (
                           <label
@@ -490,12 +490,12 @@ export default function BuyNowModal() {
                   <p className="font-serif text-lg text-ink/80 mt-3 max-w-md mx-auto">
                     Your order has been received. We will deliver it with the care it deserves.
                   </p>
-                  <div className="mt-6 inline-flex flex-col gap-1 px-6 py-4 rounded-2xl bg-gold-50 border border-gold-400/25">
+                  {/* <div className="mt-6 inline-flex flex-col gap-1 px-6 py-4 rounded-2xl bg-gold-50 border border-gold-400/25">
                     <span className="font-royal text-xs tracking-royal uppercase text-ink/60">Order ID</span>
                     <span className="font-display text-lg text-ink">{order._id}</span>
                     <span className="font-royal text-xs tracking-royal uppercase text-saffron-500 mt-1">Status: {order.status}</span>
-                  </div>
-                  <p className="font-deva text-2xl text-saffron-500/70 mt-6">ईश्वर आपका भला करे</p>
+                  </div> */}
+                  {/* <p className="font-deva text-2xl text-saffron-500/70 mt-6">ईश्वर आपका भला करे</p> */}
                   <div className="mt-8 flex items-center justify-center gap-3">
                     <Button variant="outline" onClick={handleClose}>Continue Shopping</Button>
                   </div>

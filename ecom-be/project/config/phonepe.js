@@ -61,6 +61,7 @@ module.exports = {
     ? 'https://api.phonepe.com/apis/pg'
     : 'https://api-preprod.phonepe.com/apis/pg-sandbox',
 
-  redirectUrl: process.env.PHONEPE_REDIRECT_URL || 'http://localhost:3000/payment/result',
+  // redirectUrl: process.env.PHONEPE_REDIRECT_URL || 'https://shuddhik.com/payment/result',
+    redirectUrl: 'https://shuddhik.com/payment/result',
   callbackUrl: process.env.PHONEPE_CALLBACK_URL || '',
 };
