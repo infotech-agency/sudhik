@@ -238,7 +238,9 @@ if (!userId && shippingAddress.email) {
   // ONLINE
   const merchantTransactionId = shortId('MTX_');
   // const redirectUrl = `${process.env.PHONEPE_REDIRECT_URL || 'http://localhost:3000/payment/status'}?mtx=${merchantTransactionId}`;
-  const redirectUrl = `${process.env.PHONEPE_REDIRECT_URL}?merchantTransactionId=${merchantTransactionId}`;
+  // const redirectUrl = `${process.env.PHONEPE_REDIRECT_URL}?merchantTransactionId=${merchantTransactionId}`;
+    const redirectUrl = `https://shuddhik.com/payment/callback?merchantTransactionId=${merchantTransactionId}`;
+  
 
   const order = await Order.create({
     ...baseOrder,
