@@ -337,7 +337,7 @@ const getHighlightIcon = (text: string) => {
         {/* Footer features */}
         <div className="mt-7 pt-6 border-t border-gold-400/15 grid grid-cols-3 gap-2 text-center">
           {[
-            { icon: ShieldCheck, label: 'Natural & Safe' },
+            { icon: ShieldCheck, label: 'Trusted Formula' },
             { icon: Truck, label: 'Free Shipping' },
             { icon: Check, label: 'Made in India' },
           ].map(({ icon: Icon, label }) => (

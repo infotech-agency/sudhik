@@ -27,13 +27,13 @@ export const whyFeatures: Feature[] = [
       'A pure, calming sandalwood aroma that lingers gently and deepens the atmosphere of every prayer.',
     icon: 'sparkles',
   },
-  {
-    id: 'biodegradable',
-    title: 'Biodegradable',
-    description:
-      'Returns to the earth without harm. Every rinse honours the soil that gave us these botanicals.',
-    icon: 'droplet',
-  },
+  // {
+  //   id: 'biodegradable',
+  //   title: 'Biodegradable',
+  //   description:
+  //     'Returns to the earth without harm. Every rinse honours the soil that gave us these botanicals.',
+  //   icon: 'droplet',
+  // },
   {
     id: 'marble',
     title: 'Safe for Marble & Granite',

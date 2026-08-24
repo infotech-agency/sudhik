@@ -2751,6 +2751,10 @@ video {
 .text-white\/90 {
   color: rgb(255 255 255 / 0.9);
 }
+.text-saffron-800 {
+  --tw-text-opacity: 1;
+  color: rgb(94 52 8 / var(--tw-text-opacity, 1));
+}
 .line-through {
   text-decoration-line: line-through;
 }
@@ -3221,6 +3225,10 @@ input[type='number'] {
 .hover\:text-saffron-700:hover {
   --tw-text-opacity: 1;
   color: rgb(133 74 14 / var(--tw-text-opacity, 1));
+}
+.hover\:text-saffron-800:hover {
+  --tw-text-opacity: 1;
+  color: rgb(94 52 8 / var(--tw-text-opacity, 1));
 }
 .hover\:underline:hover {
   text-decoration-line: underline;
