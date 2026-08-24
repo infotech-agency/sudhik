@@ -63,5 +63,6 @@ module.exports = {
 
   // redirectUrl: process.env.PHONEPE_REDIRECT_URL || 'https://shuddhik.com/payment/result',
     redirectUrl: 'https://shuddhik.com/payment/result',
-  callbackUrl: process.env.PHONEPE_CALLBACK_URL || '',
+  // callbackUrl: process.env.PHONEPE_CALLBACK_URL || '',
+  callbackUrl:  'https://shuddhik.com/api/payments/webhook',
 };
