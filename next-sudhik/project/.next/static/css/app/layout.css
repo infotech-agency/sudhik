@@ -1037,6 +1037,9 @@ video {
 .mt-auto {
   margin-top: auto;
 }
+.-mt-10 {
+  margin-top: -2.5rem;
+}
 .line-clamp-2 {
   overflow: hidden;
   display: -webkit-box;
@@ -1201,6 +1204,9 @@ video {
 }
 .min-h-screen {
   min-height: 100vh;
+}
+.min-h-\[90vh\] {
+  min-height: 90vh;
 }
 .w-0 {
   width: 0px;
@@ -3451,6 +3457,10 @@ input[type='number'] {
     margin-top: 2.25rem;
   }
 
+  .sm\:mt-0 {
+    margin-top: 0px;
+  }
+
   .sm\:block {
     display: block;
   }
@@ -3808,6 +3818,10 @@ input[type='number'] {
     display: inline;
   }
 
+  .lg\:inline-flex {
+    display: inline-flex;
+  }
+
   .lg\:grid {
     display: grid;
   }
@@ -3826,6 +3840,10 @@ input[type='number'] {
 
   .lg\:h-\[560px\] {
     height: 560px;
+  }
+
+  .lg\:min-h-screen {
+    min-height: 100vh;
   }
 
   .lg\:w-\[350px\] {
