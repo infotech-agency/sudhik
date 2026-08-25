@@ -66,7 +66,7 @@ function PaymentCallbackContent() {
                 <span className="font-display text-lg text-ink">{orderId}</span>
               </div>
             )}
-            <p className="font-deva text-2xl text-saffron-500/70 mt-6">ईश्वर आपका भला करे</p>
+            {/* <p className="font-deva text-2xl text-saffron-500/70 mt-6">ईश्वर आपका भला करे</p> */}
             <div className="mt-8">
               <Button variant="outline" onClick={() => router.push('/products')}>Continue Shopping</Button>
             </div>

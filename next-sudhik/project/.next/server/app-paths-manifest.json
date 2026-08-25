@@ -1,7 +1,1 @@
-{
-  "/page": "app/page.js",
-  "/auth/login/page": "app/auth/login/page.js",
-  "/products/page": "app/products/page.js",
-  "/products/[idOrSlug]/page": "app/products/[idOrSlug]/page.js",
-  "/profile/page": "app/profile/page.js"
-}
+{}

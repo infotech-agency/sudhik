@@ -28,7 +28,7 @@ export const whyFeatures: Feature[] = [
     icon: 'sparkles',
   },
   // {
-  //   id: 'biodegradable',
+  //   id: 'biodegradable', 
   //   title: 'Biodegradable',
   //   description:
   //     'Returns to the earth without harm. Every rinse honours the soil that gave us these botanicals.',
