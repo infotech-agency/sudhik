@@ -74,7 +74,8 @@ export default function ReturnsRefunds() {
               Send your order ID along with unboxing proof to:
             </p>
             <div className="p-4 rounded-xl bg-[rgb(var(--color-ivory-dim))] border border-[rgba(212,175,55,0.3)] text-xs sm:text-sm">
-              <p><strong>WhatsApp:</strong> +91 72900 61140</p>
+              <p><strong>WhatsApp:</strong> +91 93193 26942</p>
+              <p><strong>WhatsApp:</strong> +91 93193 26643</p>
               <p><strong>Email:</strong> ocbuildwell@gmail.com</p>
             </div>
           </section>

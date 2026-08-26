@@ -78,7 +78,7 @@ export default function ShippingPolicy() {
             <div className="p-4 rounded-xl bg-[rgb(var(--color-ivory-dim))] border border-[rgba(212,175,55,0.3)] text-xs sm:text-sm">
               <p><strong>OC Build Well Private Ltd.</strong></p>
               <p>Sector 63, Noida, Uttar Pradesh</p>
-              <p>Email: ocbuildwell@gmail.com | Phone: +91 72900 61140</p>
+              <p>Email: ocbuildwell@gmail.com | Phone: +91 93193 26643</p>
             </div>
           </section>
         </div>
