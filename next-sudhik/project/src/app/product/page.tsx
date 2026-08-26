@@ -333,7 +333,7 @@ const PRODUCT_DETAILS = [
   { label: "Fragrance", value: "Pure Sandalwood" },
   { label: "Suitable Surfaces", value: "Wood, marble, tiles, granite — statues and puja altars" },
   { label: "Formula", value: "pH-balanced, surface-safe formula" },
-  { label: "Manufactured", value: "Made in India 🇮🇳" },
+  { label: "Manufactured", value: "Made in India" },
 ];
 
 const PACKS = [
@@ -439,7 +439,7 @@ export default async function ProductSection() {
           {/* Image */}
           <div className="lift shadow-premium relative overflow-hidden rounded-2xl border border-[rgba(212,175,55,0.28)]">
             <Image
-              src="/product/poster.jpg"
+              src="/product/poster1.png"
               alt="SHUDDHIK Temple & Sacred Surface Cleaner for wood, marble, and granite"
               width={900}
               height={1080}
