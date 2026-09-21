@@ -52,11 +52,11 @@ export default function Footer() {
             </p>
             <div className="flex items-center gap-3 mt-6">
               {[
-                { Icon: FaInstagram, label: 'Instagram' },
-                { Icon: FaFacebookF, label: 'Facebook' },
+                { Icon: FaInstagram, label: 'Instagram', link:'https://www.instagram.com/shuddhik.india' },
+                { Icon: FaFacebookF, label: 'Facebook', link:'https://www.facebook.com/share/1C2d6Sv755/' },
                 
-              ].map(({ Icon, label }) => (
-                <a key={label} href="#" aria-label={label} className="w-10 h-10 rounded-full border border-gold-400/30 flex items-center justify-center text-gold-300 hover:bg-gold-400 hover:text-ink transition-all duration-500 hover:scale-110">
+              ].map(({ Icon, label, link }) => (
+                <a key={label} href={link} aria-label={label} className="w-10 h-10 rounded-full border border-gold-400/30 flex items-center justify-center text-gold-300 hover:bg-gold-400 hover:text-ink transition-all duration-500 hover:scale-110">
                   <Icon size={15} />
                 </a>
               ))}
