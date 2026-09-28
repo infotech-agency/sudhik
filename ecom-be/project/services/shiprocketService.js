@@ -32,17 +32,28 @@ async function getToken() {
 /**
  * Build the Shiprocket order payload from our Order document (lean object).
  */
+// function buildOrderPayload(order) {
+//   const items = order.items.map((it) => ({
+//     name: it.name,
+//     sku: String(it.product),
+//     units: it.quantity,
+//     selling_price: it.price,
+//     discount: '',
+//     tax: '',
+//     hsn: 0,
+//   }));
+
 function buildOrderPayload(order) {
   const items = order.items.map((it) => ({
     name: it.name,
-    sku: String(it.product),
+    sku: it.variantSku || String(it.product),
     units: it.quantity,
     selling_price: it.price,
     discount: '',
     tax: '',
     hsn: 0,
   }));
-
+   const itemsTotal = order.items.reduce((sum, it) => sum + it.price * it.quantity, 0);
   return {
     order_id: order.orderNumber,
     order_date: new Date(order.createdAt || Date.now()).toISOString().slice(0, 10),
@@ -66,9 +77,18 @@ function buildOrderPayload(order) {
     shipping_country: order.shippingAddress.country || 'India',
     shipping_email: order.shippingAddress.email || 'noemail@shiprocket.in',
     shipping_phone: order.shippingAddress.phone,
+    // order_items: items,
+    // payment_method: order.paymentMethod === 'COD' ? 'COD' : 'Prepaid',
+    // sub_total: order.totalAmount,
+    // length: 10,
+    // breadth: 10,
+    // height: 10,
+    // weight: 0.5,
     order_items: items,
     payment_method: order.paymentMethod === 'COD' ? 'COD' : 'Prepaid',
-    sub_total: order.totalAmount,
+    sub_total: itemsTotal,                        // items ka total
+    total_discount: order.discountAmount || 0,    // coupon discount
+    transaction_charges: order.codCharge || 0,    // COD ke 49
     length: 10,
     breadth: 10,
     height: 10,

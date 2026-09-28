@@ -52,13 +52,15 @@ const orderSchema = new mongoose.Schema(
 
     couponCode: { type: String, default: null },
 
+    codCharge: { type: Number, default: 0 },
+
     discountAmount: { type: Number, default: 0 },
 
     // Final payable amount after discount
 
     totalAmount: { type: Number, required: true, min: 0 },
 
-    totalAmount: { type: Number, required: true, min: 0 },
+    // totalAmount: { type: Number, required: true, min: 0 },
     paymentMethod: { type: String, enum: ['COD', 'ONLINE'], required: true },
     paymentStatus: {
       type: String,

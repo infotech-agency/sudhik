@@ -172,7 +172,10 @@ const createOrder = asyncHandler(async (req, res) => {
     await Coupon.findByIdAndUpdate(coupon._id, { $inc: { usedCount: 1 } });
   }
 
-  const finalTotal = Math.max(total - discount, 0);
+  // const finalTotal = Math.max(total - discount, 0);
+  const COD_CHARGE = 49;
+const codCharge = paymentMethod === 'COD' ? COD_CHARGE : 0;
+const finalTotal = Math.max(total - discount, 0) + codCharge;
 
   // Resolve a user account...
   // let userId = req.user ? req.user.id : null;
@@ -211,6 +214,7 @@ if (!userId && shippingAddress.email) {
     subtotal: total,
     couponCode: appliedCouponCode,
     discountAmount: discount,
+     codCharge, 
     totalAmount: finalTotal,
     paymentMethod,
   };
