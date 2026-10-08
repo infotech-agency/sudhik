@@ -47,7 +47,7 @@ interface PurchaseCardProps {
 
 export default function PurchaseCard({ product, rating, reviewCount }: PurchaseCardProps) {
   const hasVariants = (product.variants?.length ?? 0) > 0;
-
+  console.log('variants:', product.title, product.variants);
   // const [selectedVariant, setSelectedVariant] = useState<Variant | null>(
   //   hasVariants ? product.variants![0] : null
   // );

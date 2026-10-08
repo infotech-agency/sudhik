@@ -7,6 +7,7 @@ import dynamic from 'next/dynamic';
 // Keep above-the-fold content eager — these need to be in the initial paint
 import Philosophy from '@/components/sections/Philosophy';
 import ProductsPage from './products/page';
+import PurityPromise from '@/components/sections/PurityPromise';
 
 // Defer everything below the fold — not needed for LCP/FCP
 const SacredUses = dynamic(() => import('@/components/sections/SacredUses'));
@@ -25,6 +26,7 @@ export default function HomePage() {
       <Philosophy />
       <WhyShuddhik />
       <ProductsPage/>
+      <PurityPromise/>
       <SacredUses />
       <Ingredients />
       <HowToUse />
