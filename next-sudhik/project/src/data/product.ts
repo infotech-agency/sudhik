@@ -10,7 +10,7 @@ export type GalleryImage = {
 export const galleryImages: GalleryImage[] = [
   {
     id: 'g1',
-    src: '/backgrounds/products.png',
+    src: '/backgrounds/bottles.png',
     alt: 'SHUDDHIK bottle front — temple & sacred surface cleaner',
     label: 'Front',
   },
