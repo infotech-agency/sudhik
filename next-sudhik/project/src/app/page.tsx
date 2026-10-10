@@ -1,5 +1,3 @@
-
-
 import Hero from '@/components/sections/Hero';
 import WhyShuddhik from '@/components/sections/WhyShuddhik';
 import dynamic from 'next/dynamic';
