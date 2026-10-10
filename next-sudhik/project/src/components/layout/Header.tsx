@@ -567,7 +567,7 @@ export default function Header() {
   // AFTER productSlug is declared, and BEFORE it's used below.
   const navLinks: NavLink[] = [
     // { label: 'The Product', href: productSlug ? `/products/${productSlug}` : '/products' },
-    { label: 'The Product', href: '/products/shuddhik-agni-panchatatva-temple-fragrance-mist-muz7szn8' },
+    { label: 'The Product', href: '/products/shuddhik-temple-sacred-surface-cleaner' },
     { label: 'Philosophy', href: '/', section: 'philosophy' },
     { label: 'Sacred Uses', href: '/', section: 'uses' },
     { label: 'Blog', href: '/blog' },
