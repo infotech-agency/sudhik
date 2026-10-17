@@ -38,7 +38,7 @@ import Stars from '@/components/ui/Stars';
 import { useBuyNow } from '@/lib/buynow-context';
 import { productImageUrls } from '@/lib/product-utils';
 import type { Product, Variant } from '@/lib/types';
-
+import AddToCartButton from '@/components/cart/AddToCartButton';
 interface PurchaseCardProps {
   product: Product;
   rating: number;
@@ -307,6 +307,16 @@ const getHighlightIcon = (text: string) => {
             Buy Now
           </Button>
         </div>
+  <div className='grid grid-cols-1 gap-3 mt-7'>
+          <AddToCartButton
+  productId={product._id}
+  hasVariants={false}
+  variantLabel={selectedVariant?.label ?? null}
+  quantity={qty}
+  outOfStock={!inStock}
+/>
+  </div>
+    
 
         {/* Wishlist & Share */}
         <div className="flex items-center gap-3 mt-4">

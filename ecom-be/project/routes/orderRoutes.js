@@ -1,6 +1,6 @@
 const express = require('express');
 const orderController = require('../controllers/orderController');
-const { protect, admin } = require('../middlewares/auth');
+const { protect, admin , optionalAuth } = require('../middlewares/auth');
 const { rules, validate } = require('../utils/validators');
 
 const router = express.Router();
@@ -8,7 +8,7 @@ const router = express.Router();
 // --- Public / user ---
 // Checkout (guest or logged-in). Creates the order and either persists (COD)
 // or initiates a PhonePe payment (ONLINE).
-router.post('/', rules.checkout, validate, orderController.createOrder);
+router.post('/',optionalAuth, rules.checkout, validate, orderController.createOrder);
 
 // Verify an online payment after the user returns from PhonePe.
 router.post('/verify-payment', orderController.verifyPayment);

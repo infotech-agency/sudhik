@@ -237,8 +237,8 @@
 // { success, data } / { message }.
 
 const BASE_URL =
-  'https://api.shuddhik.com'
-  // 'http://localhost:5000'
+  // 'https://api.shuddhik.com'
+  'http://localhost:5000'
   //  'http://localhost:5000';
 
 const TOKEN_KEY = 'shuddhik_token';
