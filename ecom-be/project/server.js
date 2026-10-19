@@ -19,6 +19,7 @@ const couponRoutes = require("./routes/couponRoutes");
 const blogRoutes = require("./routes/blogRoutes");
 const userRoutes = require('./routes/userRoutes');
 const videoRoutes = require("./routes/videoRoutes");
+const { startPendingPoller } = require('./controllers/orderController');
 
 const app = express();
 
@@ -69,6 +70,7 @@ const start = async () => {
         `[server] Environment: ${process.env.NODE_ENV || 'development'}`
       );
     });
+    startPendingPoller();
   } catch (error) {
     console.error('[server] Failed to start:', error.message);
     process.exit(1);

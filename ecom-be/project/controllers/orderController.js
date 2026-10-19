@@ -1020,6 +1020,48 @@ const cancelOrder = asyncHandler(async (req, res) => {
   success(res, order, 'Order cancelled');
 });
 
+function startPendingPoller() {
+  if (global.__pendingPollerStarted) return; // double start se bachao
+  global.__pendingPollerStarted = true;
+  let running = false;
+
+  setInterval(async () => {
+    if (running) return;
+    running = true;
+    try {
+      const now = Date.now();
+      const pending = await Order.find({
+        paymentMethod: 'ONLINE',
+        paymentStatus: { $in: ['PENDING', 'FAILED'] }, // FAILED bhi, kyunki verifyPayment PENDING pe bhi FAILED kar deta tha
+        merchantTransactionId: { $ne: null },
+        status: { $ne: 'Cancelled' },
+        createdAt: {
+          $gte: new Date(now - 24 * 3600 * 1000), // last 24 ghante
+          $lte: new Date(now - 60 * 1000),        // 1 min se purane
+        },
+      }).select('_id orderNumber merchantTransactionId').limit(50);
+
+      for (const o of pending) {
+        try {
+          const status = await phonepeService.checkStatus(o.merchantTransactionId);
+          if (status.paid) {
+            await markPaidOnce(o._id);
+            console.log('[poller] recovered', o.orderNumber);
+          }
+        } catch (e) {
+          console.error('[poller] check failed', o.orderNumber, e.message);
+        }
+      }
+    } catch (e) {
+      console.error('[poller] error', e.message);
+    } finally {
+      running = false;
+    }
+  }, 2 * 60 * 1000);
+
+  console.log('[poller] started');
+}
+
 module.exports = {
   createOrder,
   verifyPayment,
@@ -1031,4 +1073,5 @@ module.exports = {
   generateAWB,
   trackOrder,
   cancelOrder,
+  startPendingPoller
 };
