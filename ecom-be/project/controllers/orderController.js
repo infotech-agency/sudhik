@@ -912,13 +912,53 @@ const getOrder = asyncHandler(async (req, res) => {
 /**
  * Admin: list all orders with filters.
  */
+// const listOrders = asyncHandler(async (req, res) => {
+//   const { status, paymentStatus } = req.query;
+//   const page = Math.max(1, parseInt(req.query.page, 10) || 1);
+//   const limit = Math.min(100, Math.max(1, parseInt(req.query.limit, 10) || 20));
+//   const filter = {};
+//   if (status) filter.status = status;
+//   if (paymentStatus) filter.paymentStatus = paymentStatus;
+
+//   const skip = (page - 1) * limit;
+//   const [orders, total] = await Promise.all([
+//     Order.find(filter)
+//       .populate('user', 'name email phone')
+//       .populate('items.product', 'title images')
+//       .sort({ createdAt: -1 })
+//       .skip(skip)
+//       .limit(limit),
+//     Order.countDocuments(filter),
+//   ]);
+//   success(res, orders, 'Orders fetched', 200, {
+//     pagination: { page, limit, total, pages: Math.ceil(total / limit) },
+//   });
+// });
+
 const listOrders = asyncHandler(async (req, res) => {
-  const { status, paymentStatus } = req.query;
+  const { status, paymentStatus, paymentMethod, from, to } = req.query;
   const page = Math.max(1, parseInt(req.query.page, 10) || 1);
   const limit = Math.min(100, Math.max(1, parseInt(req.query.limit, 10) || 20));
   const filter = {};
+
   if (status) filter.status = status;
   if (paymentStatus) filter.paymentStatus = paymentStatus;
+
+  if (paymentMethod) {
+    const m = String(paymentMethod).toUpperCase();
+    filter.paymentMethod = m === 'PHONEPE' ? 'ONLINE' : m;
+  }
+
+  const range = {};
+  if (from) {
+    const d = new Date(from);
+    if (!isNaN(d)) range.$gte = d;
+  }
+  if (to) {
+    const d = new Date(to);
+    if (!isNaN(d)) range.$lte = d;
+  }
+  if (Object.keys(range).length) filter.createdAt = range;
 
   const skip = (page - 1) * limit;
   const [orders, total] = await Promise.all([
@@ -1062,6 +1102,34 @@ function startPendingPoller() {
   console.log('[poller] started');
 }
 
+async function recoverOldOnlineOrders(days = 30) {
+  const orders = await Order.find({
+    paymentMethod: 'ONLINE',
+    merchantTransactionId: { $ne: null },
+    status: { $ne: 'Cancelled' },
+    $or: [{ paymentStatus: { $ne: 'PAID' } }, { shiprocketOrderId: null }],
+    createdAt: { $gte: new Date(Date.now() - days * 24 * 3600 * 1000) },
+  });
+
+  console.log('[recover] candidates:', orders.length);
+
+  for (const o of orders) {
+    try {
+      const status = await phonepeService.checkStatus(o.merchantTransactionId);
+      if (status.paid) {
+        await markPaidOnce(o._id);          // PENDING/FAILED -> PAID + stock + push
+        await pushToShiprocket(o._id);      // pehle se PAID hai par push reh gaya ho to
+        console.log('[recover] done', o.orderNumber);
+      } else {
+        console.log('[recover] not paid', o.orderNumber, status.status);
+      }
+    } catch (e) {
+      console.error('[recover] failed', o.orderNumber, e.message);
+    }
+  }
+  console.log('[recover] finished');
+}
+
 module.exports = {
   createOrder,
   verifyPayment,
@@ -1073,5 +1141,6 @@ module.exports = {
   generateAWB,
   trackOrder,
   cancelOrder,
-  startPendingPoller
+  startPendingPoller,
+  recoverOldOnlineOrders
 };
