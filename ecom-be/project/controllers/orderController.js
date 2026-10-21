@@ -938,7 +938,7 @@ const getOrder = asyncHandler(async (req, res) => {
 const listOrders = asyncHandler(async (req, res) => {
   const { status, paymentStatus, paymentMethod, from, to } = req.query;
   const page = Math.max(1, parseInt(req.query.page, 10) || 1);
-  const limit = Math.min(100, Math.max(1, parseInt(req.query.limit, 10) || 20));
+  const limit = Math.min(2000, Math.max(1, parseInt(req.query.limit, 10) || 20));
   const filter = {};
 
   if (status) filter.status = status;
