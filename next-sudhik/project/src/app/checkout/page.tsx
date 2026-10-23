@@ -1,0 +1,565 @@
+'use client';
+
+import { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { motion, AnimatePresence } from 'framer-motion';
+import { X, Check, Lock, Truck, ShieldCheck, Loader2, AlertCircle, Tag } from 'lucide-react';
+import Button from '@/components/ui/Button';
+import { useBuyNow } from '@/lib/buynow-context';
+import { useAuth } from '@/lib/auth-context';
+import { useCart, getCartToken } from '@/lib/cart-context';
+import { api, apiRequest, ApiError, setToken } from '@/lib/api';
+import type { Order, OrderResponse, PaymentMethod, ShippingAddress } from '@/lib/types';
+
+type Step = 'form' | 'placing' | 'redirecting-success' | 'online-redirect' | 'error';
+
+// COD handling charge. Backend also adds this on its own (paymentMethod === 'COD'),
+// so keep both values in sync.
+const COD_CHARGE = 49;
+
+const emptyForm: ShippingAddress = {
+  name: '',
+  phone: '',
+  email: '',
+  address: '',
+  landmark: '',
+  city: '',
+  state: '',
+  pincode: '',
+};
+
+export default function CheckoutPage() {
+  const { items, source } = useBuyNow();
+  const { refresh: refreshCart } = useCart();
+  const { isAuthenticated, user } = useAuth();
+  const router = useRouter();
+
+  const [method, setMethod] = useState<PaymentMethod>('COD');
+  const [form, setForm] = useState<ShippingAddress>(emptyForm);
+  const [prefilled, setPrefilled] = useState(false);
+  const [step, setStep] = useState<Step>('form');
+  const [error, setError] = useState('');
+
+  const [couponInput, setCouponInput] = useState('');
+  const [couponStatus, setCouponStatus] = useState<'idle' | 'checking' | 'valid' | 'invalid'>('idle');
+  const [couponMessage, setCouponMessage] = useState('');
+  const [appliedCoupon, setAppliedCoupon] = useState<{ code: string; discount: number } | null>(null);
+
+  const placedRef = useRef(false); // order place hone ke baad redirect-to-products na ho
+  const firedRef = useRef(false); // Meta InitiateCheckout sirf ek baar
+
+  // Items nahi hain (direct URL / refresh) -> wapas products pe bhejo
+  useEffect(() => {
+    if (items.length === 0 && !placedRef.current) {
+      router.replace('/products');
+    }
+  }, [items, router]);
+
+  // Prefill user details + last order address
+  useEffect(() => {
+    if (prefilled) return;
+
+    async function prefill() {
+      if (user) {
+        setForm((prev) => ({
+          ...prev,
+          name: user.name || prev.name,
+          email: user.email || prev.email,
+          phone: user.phone || prev.phone,
+        }));
+      }
+
+      try {
+        const orders = await api.get<Order[]>('/api/orders/me', undefined, true);
+        const last = orders?.[0];
+        if (last?.shippingAddress) {
+          setForm((prev) => ({
+            ...prev,
+            name: last.shippingAddress.name || prev.name,
+            email: last.shippingAddress.email || prev.email,
+            phone: last.shippingAddress.phone || prev.phone,
+            address: last.shippingAddress.address || prev.address,
+            landmark: last.shippingAddress.landmark || prev.landmark,
+            city: last.shippingAddress.city || prev.city,
+            state: last.shippingAddress.state || prev.state,
+            pincode: last.shippingAddress.pincode || prev.pincode,
+          }));
+        }
+      } catch {
+        // ignore
+      } finally {
+        setPrefilled(true);
+      }
+    }
+
+    prefill();
+  }, [user, prefilled]);
+
+  // Meta Pixel: InitiateCheckout
+  useEffect(() => {
+    if (firedRef.current || items.length === 0) return;
+    firedRef.current = true;
+    const value = items.reduce((s, it) => s + it.unitPrice * it.quantity, 0);
+    (window as any).fbq?.('track', 'InitiateCheckout', {
+      content_ids: items.map((it) => it.productId),
+      content_type: 'product',
+      value,
+      currency: 'INR',
+      num_items: items.reduce((s, it) => s + it.quantity, 0),
+    });
+  }, [items]);
+
+  const subtotal = items.reduce((s, it) => s + it.unitPrice * it.quantity, 0);
+  const discount = appliedCoupon ? appliedCoupon.discount : 0;
+  const codCharge = method === 'COD' ? COD_CHARGE : 0;
+  const total = Math.max(subtotal - discount, 0) + codCharge;
+
+  const handleApplyCoupon = async () => {
+    const code = couponInput.trim().toUpperCase();
+    if (!code) return;
+    setCouponStatus('checking');
+    setCouponMessage('');
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/coupons/validate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        // COD charge is NOT part of the coupon's min-order check
+        body: JSON.stringify({ code, orderAmount: subtotal }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setAppliedCoupon({ code: data.data.code, discount: data.data.discount });
+        setCouponStatus('valid');
+        setCouponMessage(`Coupon applied — ₹${data.data.discount} off`);
+      } else {
+        setAppliedCoupon(null);
+        setCouponStatus('invalid');
+        setCouponMessage(data.message || 'Invalid coupon');
+      }
+    } catch {
+      setAppliedCoupon(null);
+      setCouponStatus('invalid');
+      setCouponMessage('Something went wrong, try again');
+    }
+  };
+
+  const removeCoupon = () => {
+    setAppliedCoupon(null);
+    setCouponInput('');
+    setCouponStatus('idle');
+    setCouponMessage('');
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (items.length === 0) return;
+    setStep('placing');
+    setError('');
+
+    try {
+      const cartToken = getCartToken();
+
+      // Cart checkout: server cart se items leta hai. Buy Now: sirf productId/variant/qty,
+      // price server khud DB se nikalta hai.
+      const res = await apiRequest<OrderResponse>('/api/orders', {
+        method: 'POST',
+        auth: source === 'cart' ? true : isAuthenticated,
+        headers: cartToken ? { 'x-cart-token': cartToken } : {},
+        body: {
+          ...(source === 'cart'
+            ? { source: 'cart' }
+            : {
+                items: items.map((it) => ({
+                  productId: it.productId,
+                  quantity: it.quantity,
+                  variantLabel: it.variantLabel,
+                  variantSku: it.variantSku,
+                })),
+              }),
+          paymentMethod: method,
+          shippingAddress: form,
+          couponCode: appliedCoupon?.code,
+          // COD charge is added by the backend based on paymentMethod
+        },
+      });
+
+      if (res.authToken) {
+        setToken(res.authToken);
+      }
+
+      placedRef.current = true;
+
+      if (method === 'ONLINE' && res.paymentUrl) {
+        setStep('online-redirect');
+        if (res.merchantTransactionId) {
+          sessionStorage.setItem('pending_merchant_txn', res.merchantTransactionId);
+        }
+        setTimeout(() => {
+          window.location.href = res.paymentUrl!;
+        }, 1500);
+        return;
+      }
+
+      // COD: dedicated success page pe bhejo taaki Meta Pixel / GA4 / Google Ads
+      // Purchase conversion real URL pe fire kar sake.
+      const orderId =
+        (res as any).order?._id ??
+        (res as any).order?.id ??
+        (res as any).id ??
+        (res as any).orderId ??
+        '';
+      const params = new URLSearchParams({
+        orderId: String(orderId),
+        amount: String(total),
+      });
+
+      if (source === 'cart') refreshCart(); // cart navbar count update
+
+      setStep('redirecting-success');
+      router.push(`/order-success?${params.toString()}`);
+    } catch (err) {
+      placedRef.current = false;
+      const msg = err instanceof ApiError ? err.message : 'Something went wrong. Please try again.';
+      setError(msg);
+      setStep('error');
+    }
+  };
+
+  if (items.length === 0) return null;
+
+  return (
+    <div className="min-h-screen bg-ivory pt-24">
+      <div className="max-w-6xl mx-auto w-full px-4 sm:px-8 py-8 sm:py-12">
+        <AnimatePresence mode="wait">
+          {step === 'form' && (
+            <motion.div
+              key="form"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              className="grid md:grid-cols-5 gap-8 md:gap-10"
+            >
+              {/* left side – form */}
+              <form onSubmit={handleSubmit} className="md:col-span-3 space-y-6">
+                {/* Account section */}
+                <div>
+                  <p className="font-royal text-sm font-bold tracking-royal uppercase text-saffron-700 mb-3">
+                    Account
+                  </p>
+                  {isAuthenticated ? (
+                    <div className="flex items-center gap-2 p-3 rounded-xl bg-saffron-50 border border-saffron-500/20">
+                      <Check size={16} className="text-saffron-500" />
+                      <span className="font-serif text-md text-ink/90 font-medium">
+                        Welcome back{user?.name ? `, ${user.name}` : ''} — your details are pre‑filled below.
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      <p className="text-center font-sans text-sm text-ink/80">
+                        Already have an account?{' '}
+                        <Link
+                          href="/auth/login"
+                          className="text-saffron-700 font-bold hover:text-saffron-800 hover:underline transition-all"
+                        >
+                          Sign in
+                        </Link>
+                        {' '}or{' '}
+                        <Link
+                          href="/auth/signup"
+                          className="text-saffron-700 font-bold hover:text-saffron-800 hover:underline transition-all"
+                        >
+                          Create an account
+                        </Link>
+                        {' '}— optional.
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Shipping Details */}
+                <div>
+                  <p className="font-royal text-sm font-bold tracking-royal uppercase text-saffron-700 mb-3">
+                    Shipping Details
+                  </p>
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <Field label="Full Name" value={form.name} onChange={(v) => setForm({ ...form, name: v })} required />
+                    <Field
+                      label="Phone"
+                      value={form.phone}
+                      onChange={(v) => setForm({ ...form, phone: v.replace(/\D/g, '').slice(0, 10) })}
+                      required
+                      maxLength={10}
+                      inputMode="numeric"
+                      pattern="[0-9]{10}"
+                      title="Enter a valid 10-digit phone number"
+                    />
+                  </div>
+                  <div className="mt-4">
+                    <Field label="Email" type="email" value={form.email} onChange={(v) => setForm({ ...form, email: v })} required />
+                  </div>
+                  <div className="mt-4">
+                    <Field label="Address" value={form.address} onChange={(v) => setForm({ ...form, address: v })} required />
+                    <Field label="Landmark (optional)" value={form.landmark || ''} onChange={(v) => setForm({ ...form, landmark: v })} />
+                  </div>
+                  <div className="grid sm:grid-cols-3 gap-4 mt-4">
+                    <Field label="City" value={form.city} onChange={(v) => setForm({ ...form, city: v })} required />
+                    <Field label="State" value={form.state} onChange={(v) => setForm({ ...form, state: v })} required />
+                    <Field
+                      label="Pincode"
+                      value={form.pincode}
+                      onChange={(v) => setForm({ ...form, pincode: v })}
+                      required
+                      maxLength={6}
+                      inputMode="numeric"
+                    />
+                  </div>
+                </div>
+
+                {/* Coupon */}
+                <div>
+                  <p className="font-royal text-sm font-bold tracking-royal uppercase text-saffron-700 mb-3">
+                    Have a coupon?
+                  </p>
+                  {appliedCoupon ? (
+                    <div className="flex items-center justify-between px-4 py-3 rounded-full bg-saffron-50 border border-saffron-500/20">
+                      <div className="flex items-center gap-2">
+                        <Tag size={14} className="text-saffron-600" />
+                        <span className="font-sans text-sm font-bold text-saffron-800">
+                          {appliedCoupon.code} applied
+                        </span>
+                      </div>
+                      <button type="button" onClick={removeCoupon} aria-label="Remove coupon" className="text-ink/40 hover:text-maroon-500 transition-colors">
+                        <X size={14} />
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={couponInput}
+                        onChange={(e) => {
+                          setCouponInput(e.target.value.toUpperCase());
+                          if (couponStatus === 'invalid') {
+                            setCouponStatus('idle');
+                            setCouponMessage('');
+                          }
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault();
+                            handleApplyCoupon();
+                          }
+                        }}
+                        placeholder="Enter coupon code"
+                        className="flex-1 min-w-0 px-4 py-3 rounded-full border border-gold-400/30 bg-white font-sans text-sm font-medium uppercase placeholder:normal-case placeholder:text-ink/35 focus:outline-none focus:border-saffron-500/40"
+                      />
+                      <button
+                        type="button"
+                        onClick={handleApplyCoupon}
+                        disabled={couponStatus === 'checking' || !couponInput.trim()}
+                        className="px-5 py-3 rounded-full bg-ink text-ivory font-sans text-xs font-bold tracking-royal-sm uppercase disabled:opacity-40 transition-opacity"
+                      >
+                        {couponStatus === 'checking' ? 'Checking…' : 'Apply'}
+                      </button>
+                    </div>
+                  )}
+                  {couponMessage && couponStatus === 'invalid' && (
+                    <p className="font-sans text-sm font-medium text-maroon-500 mt-2">{couponMessage}</p>
+                  )}
+                </div>
+
+                {/* Payment */}
+                <div>
+                  <p className="font-royal text-sm font-bold tracking-royal uppercase text-saffron-700 mb-3">
+                    Payment Method
+                  </p>
+                  <div className="space-y-2">
+                    {([
+                      ['COD', `Cash on Delivery + ₹${COD_CHARGE} COD Charges`, 'Pay when it arrives'],
+                      ['ONLINE', 'Online Payment', 'UPI / Cards via PhonePe'],
+                    ] as const).map(([val, title, sub]) => (
+                      <label
+                        key={val}
+                        className="flex items-center gap-3 p-4 rounded-xl border border-gold-400/20 bg-white cursor-pointer hover:border-gold-400/50 transition-all has-[:checked]:border-saffron-500 has-[:checked]:bg-saffron-50"
+                      >
+                        <input
+                          type="radio"
+                          name="pay"
+                          value={val}
+                          checked={method === val}
+                          onChange={() => setMethod(val)}
+                          className="accent-saffron-500"
+                        />
+                        <div>
+                          <p className="font-serif font-semibold text-ink">{title}</p>
+                          <p className="font-sans text-sm text-ink/70">{sub}</p>
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <Button type="submit" variant="primary" size="lg" fullWidth>
+                  {method === 'COD' ? `Place Order · ₹${total}` : `Pay ₹${total} Online`}
+                </Button>
+
+                <p className="flex items-center justify-center gap-2 font-sans text-sm font-medium text-ink/70">
+                  <Lock size={12} /> Secure checkout · your details are protected
+                </p>
+              </form>
+
+              {/* right side – summary */}
+              <div className="md:col-span-2">
+                <div className="md:sticky md:top-28 bg-sand/40 border border-gold-400/20 rounded-3xl p-6 sm:p-8">
+                  <p className="font-royal font-bold text-base tracking-royal uppercase text-black mb-5">
+                    Order Summary
+                  </p>
+                  <div className="space-y-4">
+                    {items.map((it) => (
+                      <div key={`${it.productId}:${it.variantLabel ?? ''}`} className="flex gap-3">
+                        {it.image && (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={it.image} alt={it.title} className="w-16 h-20 rounded-lg object-cover border border-gold-400/20" />
+                        )}
+                        <div>
+                          <p className="font-display text-lg text-ink leading-tight font-semibold">{it.title}</p>
+                          {it.variantLabel && (
+                            <p className="font-sans text-sm font-semibold text-saffron-700 mt-0.5">{it.variantLabel}</p>
+                          )}
+                          <p className="font-sans text-sm font-medium text-ink/70">Qty {it.quantity}</p>
+                          <p className="font-display text-lg text-ink mt-1 font-bold">₹{it.unitPrice * it.quantity}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-6 pt-5 border-t border-gold-400/20 space-y-2">
+                    <Row label="Subtotal" value={`₹${subtotal}`} />
+                    {appliedCoupon && (
+                      <div className="flex justify-between items-center">
+                        <span className="flex items-center gap-1.5 font-serif text-sm font-semibold text-saffron-700">
+                          <Tag size={13} /> {appliedCoupon.code}
+                        </span>
+                        <span className="font-serif text-sm font-semibold text-saffron-700">− ₹{discount}</span>
+                      </div>
+                    )}
+                    <Row label="Shipping" value="Free" />
+                    {method === 'COD' && <Row label="COD Charges" value={`₹${COD_CHARGE}`} />}
+                    <div className="flex justify-between items-baseline pt-3 border-t border-gold-400/15 mt-3">
+                      <span className="font-royal text-sm font-bold tracking-royal uppercase text-ink/90">Total</span>
+                      <span className="font-display text-2xl text-ink font-bold">₹{total}</span>
+                    </div>
+                  </div>
+                  <div className="mt-6 space-y-2.5">
+                    <span className="flex items-center gap-2 font-sans text-sm font-medium text-ink/80">
+                      <Truck size={14} className="text-saffron-500" /> Delivered in 3–6 days
+                    </span>
+                    <span className="flex items-center gap-2 font-sans text-sm font-medium text-ink/80">
+                      <ShieldCheck size={14} className="text-saffron-500" /> Natural &amp; safe formula
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {step === 'placing' && (
+            <motion.div key="placing" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="py-24 text-center">
+              <Loader2 size={40} className="text-saffron-500 animate-spin mx-auto mb-6" />
+              <h3 className="font-display text-2xl text-ink font-bold">Placing your order…</h3>
+              <p className="font-serif text-lg text-ink/80 mt-2 font-medium">Please wait while we prepare your seva.</p>
+            </motion.div>
+          )}
+
+          {step === 'redirecting-success' && (
+            <motion.div key="redirecting-success" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="py-24 text-center">
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ type: 'spring', stiffness: 200, damping: 15, delay: 0.1 }}
+                className="w-16 h-16 rounded-full bg-gradient-to-br from-saffron-500 to-maroon-500 text-ivory flex items-center justify-center mx-auto mb-6 shadow-gold"
+              >
+                <Check size={28} />
+              </motion.div>
+              <h3 className="font-display text-2xl text-ink font-bold">Order Placed with Devotion</h3>
+              <p className="font-serif text-lg text-ink/80 mt-2 font-medium">Taking you to your confirmation…</p>
+            </motion.div>
+          )}
+
+          {step === 'online-redirect' && (
+            <motion.div key="redirect" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="py-24 text-center">
+              <Loader2 size={40} className="text-saffron-500 animate-spin mx-auto mb-6" />
+              <h3 className="font-display text-2xl text-ink font-bold">Redirecting to payment…</h3>
+              <p className="font-serif text-lg text-ink/80 mt-2 font-medium">Taking you to PhonePe securely.</p>
+            </motion.div>
+          )}
+
+          {step === 'error' && (
+            <motion.div key="error" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="py-20 text-center">
+              <div className="w-16 h-16 rounded-full bg-maroon-50 border border-maroon-500/30 text-maroon-500 flex items-center justify-center mx-auto mb-6">
+                <AlertCircle size={28} />
+              </div>
+              <h3 className="font-display text-2xl text-ink font-bold">Order could not be placed</h3>
+              <p className="font-serif text-lg text-ink/80 mt-2 max-w-md mx-auto font-medium">{error}</p>
+              <Button variant="outline" className="mt-6" onClick={() => setStep('form')}>Try Again</Button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+}
+
+// --- Helper components ---
+function Field({
+  label,
+  value,
+  onChange,
+  placeholder,
+  type = 'text',
+  required,
+  maxLength,
+  inputMode,
+  pattern,
+  title,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  placeholder?: string;
+  type?: string;
+  required?: boolean;
+  maxLength?: number;
+  inputMode?: 'text' | 'numeric' | 'tel' | 'email' | 'none' | 'search' | 'url' | 'decimal';
+  pattern?: string;
+  title?: string;
+}) {
+  return (
+    <label className="block">
+      <span className="font-royal text-sm font-bold tracking-royal uppercase text-ink block mb-2">
+        {label}
+      </span>
+      <input
+        required={required}
+        type={type}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        maxLength={maxLength}
+        inputMode={inputMode}
+        pattern={pattern}
+        title={title}
+        className="w-full px-4 py-2.5 rounded-xl bg-white border border-gold-400/25 font-serif font-medium text-ink placeholder:text-ink/30 focus:outline-none focus:border-gold-400 focus:ring-2 focus:ring-gold-400/20 transition-all"
+      />
+    </label>
+  );
+}
+
+function Row({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex justify-between items-center">
+      <span className="font-serif text-sm font-medium text-ink/90">{label}</span>
+      <span className="font-serif text-sm font-semibold text-ink">{value}</span>
+    </div>
+  );
+}
