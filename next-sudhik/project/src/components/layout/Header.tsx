@@ -314,7 +314,7 @@ type NavLink = { label: string; hi: string; href: string; section?: string };
 type HeaderUser = { name?: string } | null | undefined;
 
 const NAV_LINKS: NavLink[] = [
-  { label: 'The Product', hi: 'उत्पाद', href: '/products/shuddhik-temple-sacred-surface-cleaner' },
+  { label: 'The Product', hi: 'उत्पाद', href: '/products' },
   { label: 'Philosophy', hi: 'दर्शन', href: '/', section: 'philosophy' },
   { label: 'Sacred Uses', hi: 'पवित्र उपयोग', href: '/', section: 'uses' },
   { label: 'Blog', hi: 'ब्लॉग', href: '/blog' },
